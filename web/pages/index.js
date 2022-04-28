@@ -235,6 +235,19 @@ const Wrapper = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const TerminalWrapper = styled.div`
+  margin: 0 auto;
+  width: 500px;
+  max-width: 500px;
+  height: 450px;
+  border: 1px solid lightgrey;
+  padding: 2rem;
+  padding-bottom: 0rem;
+  border-radius: 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -255,19 +268,6 @@ const Wrapper = styled(motion.div)`
     background: #555;
     cursor: pointer;
   }
-`;
-
-const TerminalWrapper = styled.div`
-  margin: 0 auto;
-  width: 500px;
-  max-width: 500px;
-  height: 450px;
-  border: 1px solid lightgrey;
-  padding: 2rem;
-  padding-bottom: 0rem;
-  border-radius: 5px;
-  overflow-y: scroll;
-  overflow-x: hidden;
 
   @media (max-width: ${breakpoints.s}px) {
     width: 70vw;
