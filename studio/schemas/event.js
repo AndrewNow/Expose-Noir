@@ -14,11 +14,11 @@ export default {
       description: "Add cents as zeroes, ie 500 = $5",
       type: "number",
     },
-    // {
-    //   name: "description",
-    //   title: "Description / Lineup",
-    //   type: "blockContent",
-    // },
+    {
+      name: "description",
+      title: "Description / Lineup",
+      type: "blockContent",
+    },
     {
       name: "launchAt",
       title: "Event date, Start time",

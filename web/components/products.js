@@ -26,7 +26,7 @@ const Products = ({ products }) => {
           <Options>
             <strong>Options:</strong>
             <Button onClick={() => addItem(product)}>Add to cart</Button>
-            <br /> {" | "}
+            {" | "}
             <Button onClick={() => removeItem(product.id)}>Remove</Button>
           </Options>
         </div>
@@ -60,6 +60,8 @@ const Section = styled.section`
 
 const Options = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 const Button = styled.button`
