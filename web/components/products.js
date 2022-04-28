@@ -1,21 +1,30 @@
 import { useShoppingCart, formatCurrencyString } from "use-shopping-cart";
 import urlFor from "../lib/sanity/urlFor";
 import styled, { keyframes } from "styled-components";
+import BlockContent from "@sanity/block-content-to-react";
 
 const Products = ({ products }) => {
-  const { addItem, removeItem } = useShoppingCart();
+  const { addItem, decrementItem, cartCount } = useShoppingCart();
 
   return (
     <Section>
       {products.map((product) => (
         <div key={product.id}>
+          {console.log(product)}
           <h6>{product.name}</h6>
-          {/* {product.description} */}
           <p>
-            <strong>Location: </strong>
+            <strong>location: </strong>
             {product.location}
           </p>
-          <img src={urlFor(product.image).width(200)} alt={product.name} />
+          {product.description && (
+            <p>
+              <strong>lineup: </strong>
+              <BlockContent blocks={product.description} />
+            </p>
+          )}
+          {product.image && (
+            <img src={urlFor(product.image).width(200)} alt={product.name} />
+          )}
           <p>
             {formatCurrencyString({
               value: product.price,
@@ -24,10 +33,22 @@ const Products = ({ products }) => {
             CAD
           </p>
           <Options>
-            <strong>Options:</strong>
-            <Button onClick={() => addItem(product)}>Add to cart</Button>
-            {" | "}
-            <Button onClick={() => removeItem(product.id)}>Remove</Button>
+            <strong>quantity: </strong>
+            <div>
+              <Button
+                onClick={() => addItem(product)}
+                aria-label="Add ticket to cart"
+              >
+                +
+              </Button>
+              {cartCount}
+              <Button
+                onClick={() => decrementItem(product.id)}
+                aria-label="Remove a ticket from the cart"
+              >
+                -
+              </Button>
+            </div>
           </Options>
         </div>
       ))}
@@ -66,6 +87,7 @@ const Options = styled.div`
 
 const Button = styled.button`
   margin: 0 0.5rem;
+  width: 35px;
 
   :hover,
   :focus {

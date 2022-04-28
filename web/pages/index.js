@@ -11,6 +11,7 @@ import MailchimpFormContainer from "../components/Mailchimp/mailchimpFormContain
 import { breakpoints } from "../components/breakpoints";
 
 export default function Home({ products }) {
+  // animation config
   const initialLoadAnim = {
     hidden: { opacity: 0 },
     animate: {
@@ -70,10 +71,8 @@ export default function Home({ products }) {
   useEffect(() => {
     if (showResults === true) {
       runFakeQuery();
-    }
+    } else return;
   }, [showResults]);
-
-  console.log(fakeQuery);
 
   // const handleInputKeyEvent = (event) => {
   //   // Number 89 is the "Y" key on the keyboard, 78 is "N"
@@ -85,6 +84,30 @@ export default function Home({ products }) {
   //     setShowResults(false);
   //   }
   // };
+
+  // 4. Detect [ Y / N ] keypresses
+  // https://stackoverflow.com/questions/55565444/how-to-register-event-with-useeffect-hooks
+  useEffect(() => {
+    const handleUserKeyPress = (event) => {
+      // if user hits Y
+      if (event.keyCode === 89) {
+        event.preventDefault();
+        handleUserYes();
+      }
+      // if user hits N
+      if (event.keyCode === 78) {
+        event.preventDefault();
+        handleUserNo();
+        setFakeQuery(false);
+        setResultsFound(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleUserKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleUserKeyPress);
+    };
+  });
 
   return (
     <PageWrapper>
@@ -271,6 +294,7 @@ const TerminalWrapper = styled.div`
 
   @media (max-width: ${breakpoints.s}px) {
     width: 70vw;
+    border: none;
   }
 `;
 
@@ -335,10 +359,12 @@ const NewsletterWrapper = styled(motion.div)`
 
 const FakeQuery = styled.div`
   margin: 1rem 0;
+  margin-top: 0rem;
   animation: ${blink} 0.5s linear infinite alternate;
 `;
 const FakeQueryComplete = styled.div`
   margin: 1rem 0;
+  margin-top: 0rem;
 `;
 
 const Shop = styled(motion.section)``;
