@@ -1,14 +1,10 @@
 import groq from "groq";
 
 export const eventQuery = groq`
-*[_type=="event"]{
+*[_type=="event"] | order(price) {
     name,
+    soldOut,
     price,
-    description,
-    launchAt, 
-    endAt,
-    location,
+    currency,
     "id": _id,
-    "image": image.asset->url,
-    currency
   }`;

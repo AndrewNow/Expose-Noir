@@ -19,28 +19,28 @@ export default function CartSummary() {
   //sets our cartEmpty state with cart data
   useEffect(() => setCartEmpty(!cartCount), [cartCount]);
 
+  const [checkoutAnimation, setCheckoutAnimation] = useState(false);
+
   const handleCheckout = async (event) => {
     event.preventDefault();
+    setCheckoutAnimation(true);
     setLoading(true);
-
     //send the cart data to our serverless API
     const response = await fetchPostJSON(
       "/api/checkout_sessions/cart",
       cartDetails
     );
-
     if (response.statusCode === 500) {
+      setCheckoutAnimation(false);
       console.error(response.message);
       return;
     }
-
     //if nothing went wrong, sends user to Stripe checkout
-    redirectToCheckout({ sessionId: response.id });
+    redirectToCheckout({ sessionId: response.id })
   };
-
   return (
     <Form onSubmit={handleCheckout}>
-      <CartTitle>Cart summary:</CartTitle>
+      <CartTitle>Cart summary</CartTitle>
       {/* This is where we'll render our cart;
 			The item count changes quickly and may
 			be mismatched between client and server.
@@ -49,7 +49,7 @@ export default function CartSummary() {
 			https://reactjs.org/docs/dom-elements.html#suppresshydrationwarning*/}
 
       <p suppressHydrationWarning>
-        <strong>items:</strong> {cartCount}
+        <strong>tickets:</strong> {cartCount}
       </p>
       <p suppressHydrationWarning>
         <strong>total:</strong> {formattedTotalPrice}
@@ -57,16 +57,17 @@ export default function CartSummary() {
       {/* <p>Use 4242 4242 4242 4242 as the card number.</p> */}
 
       <CheckoutButtons>
-        {"["}
         <Button type="submit" disabled={cartEmpty || loading}>
           Checkout <div className="card-number" />
         </Button>
-        {" / "}
+        {" | "}
         <Button type="button" onClick={clearCart}>
           Clear Cart
         </Button>
-        {"]"}
       </CheckoutButtons>
+      {checkoutAnimation && (
+        <GatewayAnimation>loading gateway...</GatewayAnimation>
+      )}
     </Form>
   );
 }
@@ -75,7 +76,6 @@ const blink = keyframes`
   from {
     opacity: 0;
   }
-  
   to {
     opacity: 1;
   }
@@ -83,6 +83,7 @@ const blink = keyframes`
 
 const CartTitle = styled.h6`
   margin-bottom: 0;
+  font-size: 16px;
 `;
 
 const CheckoutButtons = styled.div`
@@ -107,4 +108,10 @@ const Button = styled.button`
 
 const Form = styled.form`
   margin: 2rem 0;
+`;
+
+const GatewayAnimation = styled.div`
+  color: blue;
+  margin-top: 1rem;
+  animation: ${blink} 0.5s linear infinite alternate;
 `;

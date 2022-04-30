@@ -1,15 +1,33 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { breakpoints } from "./breakpoints";
 
 export const Layout = (props) => {
   return <Main>{props.children}</Main>;
 };
 
+const blink = keyframes`
+  from {
+    opacity: 0;
+  }
+  
+  to {
+    opacity: 1;
+  }
+`;
+
 const Main = styled.main`
   margin: 0 auto;
   * {
     font-family: monospace;
     font-size: 13px;
+  }
+
+  a,
+  button {
+    color: black;
+    :hover {
+      animation: ${blink} 0.35s linear infinite alternate-reverse;
+    }
   }
 
   button {
@@ -32,7 +50,7 @@ const Main = styled.main`
     /* font-size: 18px; */
   }
   h6 {
-    font-size: 18px;
+    /* font-size: 18px; */
   }
   p,
   input,

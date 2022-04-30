@@ -60,11 +60,13 @@ const NewsletterForm = ({ status, message, onValidated }) => {
           // pass in the value the user has entered (their email)
           onChange={(event) => setEmail(event?.target?.value ?? "")}
           type="email"
-          placeholder="Enter email here..."
+          placeholder="join our mailing list..."
           // in case user hits Enter instead of submit
           onKeyUp={(event) => handleInputKeyEvent(event)}
         />
-        <SubmitButton onClick={handleFormSubmit}>subscribe</SubmitButton>
+        <SubmitButton onClick={handleFormSubmit}>
+          submit
+        </SubmitButton>
       </Flex>
       <MessageWrapper>
         {status === "sending" && <div>Sending...</div>}
@@ -85,22 +87,32 @@ export default NewsletterForm;
 
 const Flex = styled.div`
   display: flex;
-  margin-top: 1rem;
+  flex-direction: column;
+  margin-top: 3rem;
 `;
 
 const Input = styled.input`
-  width: 70%;
+  width: 100%;
   border: none;
+  /* border: 1px dotted grey; */
   border-bottom: 1px dotted grey;
   ::placeholder {
-    padding-bottom: 0.25rem;
+    font-style: italic;
+    padding-bottom: 0.5rem;
   }
 `;
 
 const SubmitButton = styled.button`
-  margin: 0 1rem;
+  /* margin: 0 1rem; */
+  color: grey!important;
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: .5rem;
   background: none;
   cursor: pointer;
+  text-align: left;
+
+  text-decoration: underline;
 `;
 
 const Error = styled.div`

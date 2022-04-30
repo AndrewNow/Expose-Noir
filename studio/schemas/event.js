@@ -1,6 +1,6 @@
 export default {
   name: "event",
-  title: "Event",
+  title: "Event Ticketing",
   type: "document",
   fields: [
     {
@@ -9,45 +9,17 @@ export default {
       type: "string",
     },
     {
+      title: "Sold out?",
+      description: "When green, tickets will not be available to purchase.",
+      name: "soldOut",
+      type: "boolean",
+    },
+    {
       name: "price",
       title: "Price",
-      description: "Add cents as zeroes, ie 500 = $5",
+      description:
+        "Add cents as zeroes, ie 500 = $5. Releases are organized by price, so lower prices will take preceding order over releases with higher prices in the page hierarchy.",
       type: "number",
-    },
-    {
-      name: "description",
-      title: "Description / Lineup",
-      type: "blockContent",
-    },
-    {
-      name: "launchAt",
-      title: "Event date, Start time",
-      type: "datetime",
-      options: {
-        timeStep: 15,
-      },
-    },
-    {
-      name: "endAt",
-      title: "End time",
-      type: "datetime",
-      options: {
-        timeStep: 15,
-      },
-    },
-    {
-      name: "location",
-      title: "Location",
-      description: "Write TBD if TBD",
-      type: "text",
-    },
-    {
-      name: "image",
-      title: "Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
     },
     {
       name: "currency",
@@ -64,4 +36,11 @@ export default {
   initialValue: {
     currency: "cad",
   },
+  orderings: [
+    {
+      title: "Release Order",
+      name: "releaseOrder",
+      by: [{ field: "price", direction: "asc" }],
+    },
+  ],
 };
