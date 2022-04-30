@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Cart from "../components/cart";
 import CartSummary from "../components/cartSummary";
 import Products from "../components/products";
@@ -9,10 +9,12 @@ import { eventDescriptionQuery } from "../lib/sanity/eventDescriptionQuery";
 import { eventQuery } from "../lib/sanity/eventQuery";
 import BlockContent from "@sanity/block-content-to-react";
 import urlFor from "../lib/sanity/urlFor";
-import { breakpoints } from "../components/breakpoints";
+import { breakpoints } from "../components/utils/breakpoints";
 
 const Tickets = ({ eventDescription, products }) => {
+  // logic for converting ISO date into regular human-readable format below
   const event = eventDescription[0];
+
   const d = new Date(`${event.launchAt}`);
   const e = new Date(`${event.endAt}`);
 
@@ -59,10 +61,32 @@ const Tickets = ({ eventDescription, products }) => {
     fullTimeEnd = hourArray[endHour] + "pm"; // fulltime = 10:08 PM
   }
 
+  // animation config
+  const initialLoadAnim = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const staggerChild = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: [0, 1, 0, 1],
+      transition: {
+        duration: 0.25,
+        ease: "linear",
+      },
+    },
+  };
+
   return (
-    <Wrapper>
+    <Wrapper variants={initialLoadAnim} initial="hidden" animate="animate">
       {eventDescription[0] ? (
-        <DescriptionWrapper>
+        <DescriptionWrapper variants={staggerChild}>
           <DescriptionHeader>
             <h2>{event?.name}</h2>
           </DescriptionHeader>
@@ -99,57 +123,32 @@ const Tickets = ({ eventDescription, products }) => {
           </NewsletterWrapper>
         </DescriptionWrapper>
       ) : (
-        <p>
-          No events at the moment, but you can subscribe to our newsletter in
-          the meantime.
-        </p>
+        <NoEvents variants={staggerChild}>
+          <p>
+            No events planned at the moment, but you can subscribe to our
+            newsletter in the meantime for updates.
+            <br />
+            <br />
+            <NewsletterWrapper>
+              <MailchimpFormContainer />
+            </NewsletterWrapper>
+          </p>
+        </NoEvents>
       )}
-      <ShopWrapper>
-        <DescriptionHeader>
-          <h2>tickets</h2>
-        </DescriptionHeader>
-        <Cart>
-          <Products products={products} />
-          <CartSummary />
-        </Cart>
-      </ShopWrapper>
+      {eventDescription[0] && (
+        <ShopWrapper variants={staggerChild}>
+          <DescriptionHeader>
+            <h2>tickets</h2>
+          </DescriptionHeader>
+          <Cart>
+            <Products products={products} />
+            <CartSummary />
+          </Cart>
+        </ShopWrapper>
+      )}
     </Wrapper>
   );
 };
-// {/* products.length > 0 ?
-// <>
-// {resultsFound ? (
-//     <FakeQueryComplete>Query complete.</FakeQueryComplete>
-//   ) : (
-//     <FakeQuery>Querying data...</FakeQuery>
-//     )}
-//     {resultsFound && (
-//       <motion.div variants={staggerChild}>{"> "} 1 event found</motion.div>
-//       )}
-//       {fakeQuery && (
-//         <>
-//         <motion.div
-//         variants={initialLoadAnim}
-//         initial="hidden"
-//         animate="animate"
-//         >
-//         <TicketTitle variants={staggerChild}>
-//         {"> "}tickets available:
-//         </TicketTitle>
-//         <Shop variants={staggerChild}>
-//         <Cart>
-//             <Products products={products} />
-//             <CartSummary />
-//           </Cart>
-//         </Shop>
-//       </motion.div>
-//       </>
-//       )}
-//       </>
-//       ) : (
-//         <NewsletterWrapper variants={staggerChild}>
-//         <MailchimpFormContainer />
-//       </NewsletterWrapper> */}
 
 export const getStaticProps = async () => {
   const products = await client.fetch(eventQuery);
@@ -165,17 +164,7 @@ export const getStaticProps = async () => {
 
 export default Tickets;
 
-const blink = keyframes`
-  from {
-    opacity: 0;
-  }
-  
-  to {
-    opacity: 1;
-  }
-`;
-
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   /* max-width: 600px; */
   margin: 0 auto;
   display: flex;
@@ -187,7 +176,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const DescriptionWrapper = styled.div`
+const DescriptionWrapper = styled(motion.div)`
   max-width: 200px;
   margin: 2rem;
   @media (max-width: ${breakpoints.s}px) {
@@ -205,7 +194,7 @@ const DescriptionHeader = styled.div`
   }
 `;
 
-const ShopWrapper = styled.div`
+const ShopWrapper = styled(motion.div)`
   margin: 2rem;
 
   @media (max-width: ${breakpoints.s}px) {
@@ -226,4 +215,14 @@ const WrapMarkdown = styled.div`
 
 const NewsletterWrapper = styled(motion.div)`
   margin: 2rem 0;
+`;
+
+const NoEvents = styled(motion.div)`
+  height: 100%;
+  max-width: 400px;
+  margin: 2rem;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

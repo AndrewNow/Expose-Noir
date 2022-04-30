@@ -13,6 +13,9 @@ export default {
       description: "When green, tickets will not be available to purchase.",
       name: "soldOut",
       type: "boolean",
+      options: {
+        layout: "checkbox",
+      },
     },
     {
       name: "price",

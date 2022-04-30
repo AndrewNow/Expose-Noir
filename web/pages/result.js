@@ -3,7 +3,8 @@ import Link from "next/link";
 import useSWR from "swr";
 import { fetchGetJSON } from "../utils/apiHelpers";
 import styled from "styled-components";
-import { breakpoints } from "../components/breakpoints";
+import { breakpoints } from "../components/utils/breakpoints";
+import { motion } from "framer-motion";
 // import PrintObject from "../components/printObject";
 
 const ResultPage = () => {
@@ -27,8 +28,20 @@ const ResultPage = () => {
     return <div>failed to load</div>;
   }
 
+  // animation config
+  const blink = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: [0, 1, 0, 1],
+      transition: {
+        duration: 0.25,
+        ease: "linear",
+      },
+    },
+  };
+
   return (
-    <Wrapper>
+    <Wrapper variants={blink} animate="animate" initial="hidden">
       {/* <h3>Status: {data?.payment_intent?.status ?? "loading..."}</h3> */}
       <h2>
         thank you {/* just take a user's first name */}
@@ -62,7 +75,7 @@ const ResultPage = () => {
 
 export default ResultPage;
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   max-width: 400px;
   margin: 0 auto;
   height: 90vh;

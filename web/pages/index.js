@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { client } from "../lib/sanity/client";
-import { homeQuery } from "../lib/sanity/homeQuery";
 import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
-import { eventQuery } from "../lib/sanity/eventQuery";
-import { breakpoints } from "../components/breakpoints";
+import { breakpoints } from "../components/utils/breakpoints";
 import { useRouter } from "next/router";
 
-export default function Home({ products }) {
+export default function Home() {
   // animation config
   const initialLoadAnim = {
     hidden: { opacity: 0 },
@@ -30,55 +27,31 @@ export default function Home({ products }) {
     },
   };
 
-  // 1. State for the intial fake loader
-  const [connecting, setConnecting] = useState(true);
-  const connectingTimeout = () => {
-    setTimeout(() => {
-      setConnecting(false);
-    }, 1500);
-  };
-
-  useEffect(() => {
-    connectingTimeout();
-  }, []);
-
-  // 2. Handlers for when user clicks on [ y / n ]
+  // 1. Handlers for when user clicks on [ y / n ]
   const [showResults, setShowResults] = useState(null);
+  const [userText, setUserText] = useState("");
 
   const handleUserYes = () => {
     setShowResults(true);
+    setUserText("y");
   };
   const handleUserNo = () => {
     setShowResults(false);
+    setUserText("n");
   };
 
-  // 3. If a user clicks yes, run a fake query
-  const [fakeQuery, setFakeQuery] = useState(false);
-  const [resultsFound, setResultsFound] = useState(false);
-
-  const runFakeQuery = () => {
-    setTimeout(() => {
-      setResultsFound(true);
-    }, 1500);
-    setTimeout(() => {
-      setFakeQuery(true);
-    }, 2500);
-  };
-
+  // 2. If a user clicks yes, run a fake query
   useEffect(() => {
     if (showResults === true) {
-      runFakeQuery();
       setTimeout(() => {
         // go to ticket page
         router.push("/tickets");
-      }, 1500);
+      }, 1000);
     } else return;
   }, [showResults]);
 
-  // 4. Detect [ Y / N ] keypresses
+  // 3. Detect [ Y / N ] keypresses
   // https://stackoverflow.com/questions/55565444/how-to-register-event-with-useeffect-hooks
-
-  const [userText, setUserText] = useState("");
 
   useEffect(() => {
     const handleUserKeyPress = (event) => {
@@ -97,8 +70,6 @@ export default function Home({ products }) {
       if (keyCode === 78) {
         event.preventDefault();
         handleUserNo();
-        setFakeQuery(false);
-        setResultsFound(false);
       }
 
       // if user hits Backspace, remove the last character
@@ -134,26 +105,14 @@ export default function Home({ products }) {
         </Continue>
         {showResults !== null &&
           (showResults ? (
-            <Result variants={staggerChild}> :) </Result>
+            <Result> :</Result>
           ) : (
-            "bye!"
+            <motion.div variants={staggerChild}>bye!</motion.div>
           ))}
       </TerminalWrapper>
     </PageWrapper>
   );
 }
-
-export const getStaticProps = async () => {
-  const posts = await client.fetch(homeQuery);
-  const products = await client.fetch(eventQuery);
-
-  return {
-    props: {
-      posts,
-      products,
-    },
-  };
-};
 
 const blink = keyframes`
   from {
@@ -164,14 +123,6 @@ const blink = keyframes`
     opacity: 1;
   }
 `;
-
-// const Connecting = styled.div`
-//   animation: ${blink} 0.5s linear infinite alternate;
-//   margin: 1rem 0;
-// `;
-// const Connected = styled.div`
-//   margin: 1rem 0;
-// `;
 
 const Continue = styled(motion.div)`
   margin: 3rem 0;
@@ -237,9 +188,21 @@ const UserText = styled.span`
   overflow: hidden;
 `;
 
-const Result = styled(motion.div)`
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 40%;
-`
+const ellipsis = keyframes`
+  to {
+    width: 30px;    
+  }
+}
+`;
+
+const Result = styled.div`
+  ::after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+    animation: ${ellipsis} steps(4, end) 900ms infinite;
+    content: ")))";
+    width: 0px;
+  }
+`;

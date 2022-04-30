@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { breakpoints } from "./breakpoints";
+import { breakpoints } from "./utils/breakpoints";
 
 export const Layout = (props) => {
   return <Main>{props.children}</Main>;

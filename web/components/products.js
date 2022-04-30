@@ -9,11 +9,11 @@ const Products = ({ products }) => {
       {products.map((product) => (
         <Ticket
           key={product.id}
-          style={{ color: product.soldOut ? "black" : "grey" }}
+          style={{ color: product.soldOut ? "grey" : "black" }}
         >
           <p
             style={{
-              textDecoration: product.soldOut ? "none" : "line-through",
+              textDecoration: product.soldOut ? "line-through" : "none",
             }}
           >
             <strong>{product.name}</strong> -{" "}
@@ -23,15 +23,15 @@ const Products = ({ products }) => {
             })}{" "}
             CAD
           </p>
-          {product.soldOut ? null : <p>sold out</p>}
-          {product.soldOut ? (
+          {product.soldOut ? <p>sold out</p> : null}
+          {product.soldOut ? null : (
             <Options>
               <strong>quantity: </strong>
               <div>
                 <Button
                   onClick={() => addItem(product)}
                   aria-label="Add ticket to cart"
-                  disabled={product.soldOut ? false : true}
+                  disabled={product.soldOut ? true : false}
                 >
                   +
                 </Button>
@@ -39,13 +39,13 @@ const Products = ({ products }) => {
                 <Button
                   onClick={() => decrementItem(product.id)}
                   aria-label="Remove a ticket from the cart"
-                  disabled={product.soldOut ? false : true}
+                  disabled={product.soldOut ? true : false}
                 >
                   -
                 </Button>
               </div>
             </Options>
-          ) : null}
+          )}
         </Ticket>
       ))}
     </Section>
@@ -96,8 +96,7 @@ const Button = styled.button`
     cursor: not-allowed;
     animation: none;
   }
-  :hover:not(:disabled),
-  :focus:not(:disabled) {
+  :hover:not(:disabled) {
     color: white;
     background: black;
     animation: ${blink} 0.5s linear infinite alternate;

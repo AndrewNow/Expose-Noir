@@ -36,7 +36,7 @@ export default function CartSummary() {
       return;
     }
     //if nothing went wrong, sends user to Stripe checkout
-    redirectToCheckout({ sessionId: response.id })
+    redirectToCheckout({ sessionId: response.id });
   };
   return (
     <Form onSubmit={handleCheckout}>
@@ -65,8 +65,18 @@ export default function CartSummary() {
           Clear Cart
         </Button>
       </CheckoutButtons>
-      {checkoutAnimation && (
-        <GatewayAnimation>loading gateway...</GatewayAnimation>
+      {checkoutAnimation ? (
+        <>
+          <br />
+          <br />
+          <GatewayAnimation>loading gateway</GatewayAnimation>
+        </>
+      ) : (
+        <>
+          <br />
+          <br />
+          <AnimateSmiley>:)</AnimateSmiley>
+        </>
       )}
     </Form>
   );
@@ -110,8 +120,39 @@ const Form = styled.form`
   margin: 2rem 0;
 `;
 
+const ellipsis = keyframes`
+  to {
+    width: 30px;
+  }
+`;
+
 const GatewayAnimation = styled.div`
   color: blue;
   margin-top: 1rem;
-  animation: ${blink} 0.5s linear infinite alternate;
+
+  ::after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    -webkit-animation: ${ellipsis} steps(4, end) 900ms infinite;
+    animation: ${ellipsis} steps(4, end) 900ms infinite;
+    content: "...";
+    width: 0px;
+  }
+`;
+
+const smiley = keyframes`
+  to {
+    width: 30px;
+  }
+`;
+const AnimateSmiley = styled.div`
+  ::after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    animation: ${smiley} steps(4, end) 900ms infinite alternate;
+    content: ")))";
+    width: 0px;
+  }
 `;
