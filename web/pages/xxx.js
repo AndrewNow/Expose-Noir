@@ -2,18 +2,15 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import Head from "next/head";
-
-const FouroFour = () => {
+const xxx = () => {
   return (
     <>
       <Head>
-        <title>404</title>
-        <meta name="description" content="Oops! Broken route." />
-        <meta name="og:title" content="Oops! Broken route." />
-        
+        <title>xxx</title>
+        <meta name="description" content="xxx" />
       </Head>
       <Wrapper>
-        <Center>You've reached a broken page!</Center>
+        <Center>Enter video here</Center>
         <br />
         <br />
         <Return href="/">↽ Return</Return>
@@ -22,7 +19,7 @@ const FouroFour = () => {
   );
 };
 
-export default FouroFour;
+export default xxx;
 
 const blink = keyframes`
   from {

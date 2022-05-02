@@ -11,6 +11,8 @@ export default {
     {
       name: "description",
       title: "Description / Lineup",
+      description:
+        "For a line break/new paragraph, make sure you hit enter twice. If you just hit enter once, the markdown file won't know to make a new line.",
       type: "blockContent",
     },
     {
@@ -34,16 +36,13 @@ export default {
     {
       name: "location",
       title: "Location",
-      description: "Write TBD if TBD",
+      description: "Write location tba if tba",
       type: "text",
     },
     {
       name: "image",
-      title: "Image",
+      title: "Poster",
       type: "image",
-      options: {
-        hotspot: true,
-      },
     },
   ],
 };

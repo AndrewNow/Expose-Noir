@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
-import styled from "styled-components";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import styled, { keyframes } from "styled-components";
 import Cart from "../components/cart";
 import CartSummary from "../components/cartSummary";
 import Products from "../components/products";
@@ -10,6 +11,7 @@ import { eventQuery } from "../lib/sanity/eventQuery";
 import BlockContent from "@sanity/block-content-to-react";
 import urlFor from "../lib/sanity/urlFor";
 import { breakpoints } from "../components/utils/breakpoints";
+import Head from "next/head";
 
 const Tickets = ({ eventDescription, products }) => {
   // logic for converting ISO date into regular human-readable format below
@@ -83,70 +85,85 @@ const Tickets = ({ eventDescription, products }) => {
     },
   };
 
+  const [ticketOpen, setTicketOpen] = useState(false);
+
   return (
-    <Wrapper variants={initialLoadAnim} initial="hidden" animate="animate">
-      {eventDescription[0] ? (
-        <DescriptionWrapper variants={staggerChild}>
-          <DescriptionHeader>
-            <h2>{event?.name}</h2>
-          </DescriptionHeader>
-          <p>
-            <strong>where: </strong> <br />
-            {event?.location}
-          </p>
-          <p>
-            <strong>when: </strong> <br />
-            {event?.launchAt && (
-              <span>
-                {month} {date}, {year}. {fullTimeStart} to {fullTimeEnd}.
-              </span>
-            )}
-          </p>
-          <WrapMarkdown>
-            <BlockContent blocks={event?.description} />
-          </WrapMarkdown>
-          <DownloadPoster
-            href={urlFor(event?.image)}
-            aria-label="download poster"
-            target="_blank"
-            download={`${event.name}_poster`}
-          >
-            download poster
-          </DownloadPoster>{" "}
-          <br />
-          <br />
-          <a href="mailto:complaints@exposenoir.com">
-            complaints@exposenoir.com
-          </a>
-          <NewsletterWrapper>
-            <MailchimpFormContainer />
-          </NewsletterWrapper>
-        </DescriptionWrapper>
-      ) : (
-        <NoEvents variants={staggerChild}>
-          <p>
-            No events planned at the moment, but you can subscribe to our
-            newsletter in the meantime for updates.
+    <>
+      <Head>
+        <title>tickets</title>
+        <meta name="description" content="Exposé Noir | Ticketing" />
+      </Head>
+      <Wrapper variants={initialLoadAnim} initial="hidden" animate="animate">
+        {eventDescription[0] ? (
+          <DescriptionWrapper variants={staggerChild}>
+            <WrapMarkdown>
+              <BlockContent blocks={event?.description} />
+            </WrapMarkdown>
+            <DownloadPoster
+              href={urlFor(event?.image)}
+              aria-label="download poster"
+              target="_blank"
+              download={`${event.name}_poster`}
+            >
+              download poster
+            </DownloadPoster>{" "}
             <br />
             <br />
-            <NewsletterWrapper>
-              <MailchimpFormContainer />
-            </NewsletterWrapper>
-          </p>
-        </NoEvents>
-      )}
-      {eventDescription[0] && (
-        <ShopWrapper variants={staggerChild}>
-          <DescriptionHeader>
-            <h2>tickets</h2>
-          </DescriptionHeader>
-          <Cart>
-            <Products products={products} />
-            <CartSummary />
-          </Cart>
-        </ShopWrapper>
-      )}
-    </Wrapper>
+            <a href="mailto:complaints@exposenoir.com">
+              complaints@exposenoir.com
+            </a>
+          </DescriptionWrapper>
+        ) : (
+          <NoEvents variants={staggerChild}>
+            <p>
+              No events planned at the moment, but you can subscribe to our
+              newsletter in the meantime for updates.
+              <br />
+              <br />
+              <NewsletterWrapper>
+                <MailchimpFormContainer />
+              </NewsletterWrapper>
+            </p>
+          </NoEvents>
+        )}
+        {eventDescription[0] && (
+          <ShopWrapper variants={staggerChild}>
+            <TicketLineWrapper>
+              <TicketTitleButton onClick={() => setTicketOpen(!ticketOpen)}>
+                <h2>tickets</h2>
+              </TicketTitleButton>
+              {!ticketOpen && (
+                <SmileyWidth>
+                  <AnimateSmiley>:)</AnimateSmiley>
+                </SmileyWidth>
+              )}
+            </TicketLineWrapper>
+            <AnimatePresence exitBeforeEnter>
+              {ticketOpen && (
+                <motion.div variants={staggerChild} exit="hidden">
+                  <DescriptionHeader>
+                    <h3>{event?.name}</h3>
+                    <p>
+                      {event?.launchAt && (
+                        <span>
+                          {month} {date}, {year}. {fullTimeStart} to{" "}
+                          {fullTimeEnd}
+                        </span>
+                      )}
+                    </p>
+                    <p>{event?.location}</p>
+                  </DescriptionHeader>
+                  <Cart>
+                    <Products products={products} />
+                    <CartSummary />
+                  </Cart>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </ShopWrapper>
+        )}
+      </Wrapper>
+    </>
   );
 };
 
@@ -166,6 +183,7 @@ export default Tickets;
 
 const Wrapper = styled(motion.div)`
   /* max-width: 600px; */
+  padding-top: 7.5vh;
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -178,24 +196,30 @@ const Wrapper = styled(motion.div)`
 
 const DescriptionWrapper = styled(motion.div)`
   max-width: 200px;
-  margin: 2rem;
+  margin: 0 2rem;
   @media (max-width: ${breakpoints.s}px) {
     max-width: 70vw;
     width: 250px;
-    margin: 2rem auto;
-    margin-bottom: 0rem;
+    margin: 0rem auto;
+    margin-bottom: 1rem;
   }
 `;
 
 const DescriptionHeader = styled.div`
-  text-decoration: underline;
   h2 {
+    text-decoration: underline;
     font-size: 16px;
+    margin-bottom: 1rem;
+  }
+  p {
+    text-transform: lowercase;
+    margin: 0;
   }
 `;
 
 const ShopWrapper = styled(motion.div)`
   margin: 2rem;
+  width: 250px;
 
   @media (max-width: ${breakpoints.s}px) {
     max-width: 70vw;
@@ -211,6 +235,10 @@ const DownloadPoster = styled.a`
 
 const WrapMarkdown = styled.div`
   margin: 2.5rem 0;
+
+  p {
+    margin-bottom: 2rem;
+  }
 `;
 
 const NewsletterWrapper = styled(motion.div)`
@@ -225,4 +253,45 @@ const NoEvents = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const TicketLineWrapper = styled.div`
+  display: flex;
+`;
+
+const TicketTitleButton = styled.button`
+  background: none;
+  text-decoration: underline;
+  padding: 0;
+  padding-right: 0.5rem;
+  h2 {
+    margin-top: 0;
+  }
+`;
+
+const smiley = keyframes`
+  to {
+    width: 30px;
+  }
+`;
+const AnimateSmiley = styled.div`
+  margin-right: 0.5rem;
+  ::after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    animation: ${smiley} steps(4, end) 900ms infinite alternate;
+    content: ")))";
+    width: 0px;
+  }
+`;
+
+const SmileyWrapper = styled.div`
+  display: flex;
+  width: 120px;
+  margin-top: 0.5rem;
+`;
+
+const SmileyWidth = styled.div`
+  min-width: 50px;
 `;

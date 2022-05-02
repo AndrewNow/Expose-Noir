@@ -9,3 +9,8 @@ html, body {
 button {
   height: 17px;
 }
+
+:root {
+  --font-sans: 16px;
+  --font-mono: 13px;
+}

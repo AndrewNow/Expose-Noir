@@ -40,7 +40,6 @@ export default function CartSummary() {
   };
   return (
     <Form onSubmit={handleCheckout}>
-      <CartTitle>Cart summary</CartTitle>
       {/* This is where we'll render our cart;
 			The item count changes quickly and may
 			be mismatched between client and server.
@@ -48,21 +47,13 @@ export default function CartSummary() {
 			we use 'supressHydrationWarning'.
 			https://reactjs.org/docs/dom-elements.html#suppresshydrationwarning*/}
 
-      <p suppressHydrationWarning>
-        <strong>tickets:</strong> {cartCount}
-      </p>
-      <p suppressHydrationWarning>
-        <strong>total:</strong> {formattedTotalPrice}
-      </p>
+      {/* <p suppressHydrationWarning>tickets: {cartCount}</p> */}
+      <p suppressHydrationWarning>total {formattedTotalPrice}</p>
       {/* <p>Use 4242 4242 4242 4242 as the card number.</p> */}
 
       <CheckoutButtons>
         <Button type="submit" disabled={cartEmpty || loading}>
-          Checkout <div className="card-number" />
-        </Button>
-        {" | "}
-        <Button type="button" onClick={clearCart}>
-          Clear Cart
+          purchase <div className="card-number" />
         </Button>
       </CheckoutButtons>
       {checkoutAnimation ? (
@@ -72,11 +63,14 @@ export default function CartSummary() {
           <GatewayAnimation>loading gateway</GatewayAnimation>
         </>
       ) : (
-        <>
-          <br />
-          <br />
-          <AnimateSmiley>:)</AnimateSmiley>
-        </>
+        <SmileyWrapper>
+          <SmileyWidth>
+            <AnimateSmiley>:)</AnimateSmiley>
+          </SmileyWidth>
+          <SmileyWidth>
+            <AnimateSmiley>:)</AnimateSmiley>
+          </SmileyWidth>
+        </SmileyWrapper>
       )}
     </Form>
   );
@@ -91,11 +85,6 @@ const blink = keyframes`
   }
 `;
 
-const CartTitle = styled.h6`
-  margin-bottom: 0;
-  font-size: 16px;
-`;
-
 const CheckoutButtons = styled.div`
   display: flex;
   margin-top: 1rem;
@@ -104,15 +93,11 @@ const CheckoutButtons = styled.div`
 const Button = styled.button`
   margin-right: 0.5rem;
   background: none;
-  :last-child {
-    margin-left: 0.5rem;
-  }
+  padding: 0;
 
   :hover,
   :focus {
-    color: white;
-    background: black;
-    animation: ${blink} 0.5s linear infinite alternate;
+    text-decoration: underline;
   }
 `;
 
@@ -147,6 +132,7 @@ const smiley = keyframes`
   }
 `;
 const AnimateSmiley = styled.div`
+  margin-right: 0.5rem;
   ::after {
     overflow: hidden;
     display: inline-block;
@@ -155,4 +141,14 @@ const AnimateSmiley = styled.div`
     content: ")))";
     width: 0px;
   }
+`;
+
+const SmileyWrapper = styled.div`
+  display: flex;
+  width: 120px;
+  margin-top: 0.5rem;
+`;
+
+const SmileyWidth = styled.div`
+  min-width: 50px;
 `;

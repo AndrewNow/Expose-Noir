@@ -1,32 +1,11 @@
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { breakpoints } from "../components/utils/breakpoints";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function Home() {
-  // animation config
-  const initialLoadAnim = {
-    hidden: { opacity: 0 },
-    animate: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.5,
-      },
-    },
-  };
-
-  const staggerChild = {
-    hidden: { opacity: 0 },
-    animate: {
-      opacity: [0, 1, 0, 1],
-      transition: {
-        duration: 0.5,
-        ease: "linear",
-      },
-    },
-  };
-
   // 1. Handlers for when user clicks on [ y / n ]
   const [showResults, setShowResults] = useState(null);
   const [userText, setUserText] = useState("");
@@ -47,7 +26,12 @@ export default function Home() {
         // go to ticket page
         router.push("/tickets");
       }, 1000);
-    } else return;
+    } else if (showResults === false) {
+      setTimeout(() => {
+        // go to "xxx" video page
+        router.push("/xxx");
+      }, 1000);
+    }
   }, [showResults]);
 
   // 3. Detect [ Y / N ] keypresses
@@ -87,30 +71,96 @@ export default function Home() {
 
   const router = useRouter();
 
+  // animation config
+  const initialLoadAnim = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.5,
+      },
+    },
+  };
+
+  const delayBottomAnimation = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: 1,
+      transition: {
+        delay: 1.5,
+        staggerChildren: 0.5,
+      },
+    },
+  };
+
+  const staggerChild = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: [0, 1, 0, 1],
+      transition: {
+        duration: 0.5,
+        ease: "linear",
+      },
+    },
+  };
+
   return (
-    <PageWrapper>
-      <TerminalWrapper
-        variants={initialLoadAnim}
-        initial="hidden"
-        animate="animate"
-      >
-        <motion.span variants={staggerChild}>x</motion.span>
-        <motion.span variants={staggerChild}>x</motion.span>
-        <motion.span variants={staggerChild}>x</motion.span>
-        <Continue variants={staggerChild}>
-          Continue? [<Button onClick={handleUserYes}>y</Button>/
-          <Button onClick={handleUserNo}>n</Button>
-          ]: <UserText>{userText}</UserText>
-          <Cursor />
-        </Continue>
-        {showResults !== null &&
-          (showResults ? (
-            <Result> :</Result>
-          ) : (
-            <motion.div variants={staggerChild}>bye!</motion.div>
-          ))}
-      </TerminalWrapper>
-    </PageWrapper>
+    <>
+      <Head>
+        <title>exposé noir</title>
+        <meta name="description" content="Exposé Noir | Home" />
+      </Head>
+      <PageWrapper>
+        <Container>
+          <TripleX
+            variants={initialLoadAnim}
+            initial="hidden"
+            animate="animate"
+          >
+            <motion.span variants={staggerChild}>
+              <h2>X</h2>
+            </motion.span>
+            <motion.span variants={staggerChild}>
+              <h2>X</h2>
+            </motion.span>
+            <motion.span variants={staggerChild}>
+              <h2>X</h2>
+            </motion.span>
+          </TripleX>
+          <BottomSection
+            variants={delayBottomAnimation}
+            initial="hidden"
+            animate="animate"
+          >
+            <AnimatePresence>
+              {showResults !== null ? (
+                showResults ? (
+                  <UserPressedYes> :</UserPressedYes>
+                ) : (
+                  <UserPressedNo variants={staggerChild}>bye!</UserPressedNo>
+                )
+              ) : (
+                <Continue variants={staggerChild}>
+                  <ContinueInput>
+                    <h3>continue? </h3>
+                    <UserText>
+                      <h3>{userText}</h3>
+                    </UserText>
+                    <Cursor />
+                  </ContinueInput>
+                  <ContinueButtons>
+                    <h3>
+                      [<Button onClick={handleUserYes}>y </Button>/
+                      <Button onClick={handleUserNo}> n</Button>]
+                    </h3>
+                  </ContinueButtons>
+                </Continue>
+              )}
+            </AnimatePresence>
+          </BottomSection>
+        </Container>
+      </PageWrapper>
+    </>
   );
 }
 
@@ -118,17 +168,9 @@ const blink = keyframes`
   from {
     opacity: 0;
   }
-  
   to {
     opacity: 1;
   }
-`;
-
-const Continue = styled(motion.div)`
-  margin: 3rem 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const PageWrapper = styled.div`
@@ -141,36 +183,87 @@ const PageWrapper = styled.div`
   overflow-y: hidden;
 `;
 
-const TerminalWrapper = styled(motion.div)`
-  margin: 0 auto;
-  width: 500px;
-  max-width: 500px;
-  padding: 2rem;
-  overflow-x: hidden;
+const Container = styled.section`
+  width: 200px;
+  height: 252px;
 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3D(-50%, -50%, 0);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 3rem auto;
+  @media (max-width: ${breakpoints.s}px) {
+    bottom: 10vh;
+  }
+`;
+
+const BottomSection = styled(motion.div)`
+  height: 160px;
+  box-sizing: border-box;
+`;
+
+const Continue = styled(motion.div)`
+  margin: 3rem auto;
+  text-align: center;
+
+  h3 {
+    margin: 0;
+  }
+`;
+
+const ContinueInput = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  text-align: center;
 
-  @media (max-width: ${breakpoints.s}px) {
-    width: 70vw;
-    border: none;
+  :first-of-type(h3) {
+    padding-right: 0.25rem;
+  }
+`;
+
+const ContinueButtons = styled.div`
+  margin: 1rem auto;
+`;
+
+const TripleX = styled(motion.div)`
+  margin: 0 auto;
+  margin-bottom: 10rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  span {
+    margin: 0 0.25rem;
+    font-family: sans-serif;
   }
 `;
 
 const Button = styled.button`
   background: white;
-  padding: 0 0.5rem;
-  :last-child {
+  padding: 0 0.1rem;
+  font-family: sans-serif;
+  font-size: var(--font-sans);
+  font-weight: 300;
+
+  :first-child {
     margin-right: 0.25rem;
   }
+  :last-child {
+    margin-left: 0.25rem;
+  }
+
   :hover,
   :focus {
     color: white;
     background: black;
     animation: ${blink} 0.5s linear alternate;
+  }
+  @media (max-width: ${breakpoints.s}px) {
+    padding: 0 0.25rem;
   }
 `;
 
@@ -185,6 +278,7 @@ const Cursor = styled.div`
 
 const UserText = styled.span`
   max-width: 100px;
+  margin-left: 0.5rem;
   overflow: hidden;
 `;
 
@@ -195,7 +289,12 @@ const ellipsis = keyframes`
 }
 `;
 
-const Result = styled.div`
+const UserPressedYes = styled.div`
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   ::after {
     overflow: hidden;
     display: inline-block;
@@ -205,4 +304,12 @@ const Result = styled.div`
     content: ")))";
     width: 0px;
   }
+`;
+
+const UserPressedNo = styled(motion.div)`
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

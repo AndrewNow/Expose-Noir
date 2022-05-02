@@ -1,5 +1,5 @@
 import { useShoppingCart, formatCurrencyString } from "use-shopping-cart";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 const Products = ({ products }) => {
   const { addItem, decrementItem, cartCount } = useShoppingCart();
@@ -16,17 +16,17 @@ const Products = ({ products }) => {
               textDecoration: product.soldOut ? "line-through" : "none",
             }}
           >
-            <strong>{product.name}</strong> -{" "}
+            {product.name} -{" "}
             {formatCurrencyString({
               value: product.price,
               currency: "cad",
             })}{" "}
-            CAD
+            plus tax
           </p>
           {product.soldOut ? <p>sold out</p> : null}
           {product.soldOut ? null : (
             <Options>
-              <strong>quantity: </strong>
+              quantity
               <div>
                 <Button
                   onClick={() => addItem(product)}
@@ -54,16 +54,6 @@ const Products = ({ products }) => {
 
 export default Products;
 
-const blink = keyframes`
-  from {
-    opacity: 0;
-  }
-  
-  to {
-    opacity: 1;
-  }
-`;
-
 const Section = styled.section`
   margin: 2rem 0;
   h6 {
@@ -72,9 +62,8 @@ const Section = styled.section`
 `;
 
 const Ticket = styled.div`
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px dotted grey;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
 
   p {
     margin: 0;
@@ -92,13 +81,13 @@ const Options = styled.div`
 const Button = styled.button`
   margin: 0 0.5rem;
   width: 25px;
+  background: white;
+  color: black;
+  transition: 0.25 all ease;
   :disabled {
     cursor: not-allowed;
-    animation: none;
   }
   :hover:not(:disabled) {
-    color: white;
-    background: black;
-    animation: ${blink} 0.5s linear infinite alternate;
+    background: whitesmoke;
   }
 `;
