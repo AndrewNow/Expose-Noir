@@ -9,11 +9,14 @@ const Products = ({ products }) => {
       {products.map((product) => (
         <Ticket
           key={product.id}
-          style={{ color: product.soldOut ? "grey" : "black" }}
+          style={{
+            color: product.soldOut || !product.forSale ? "grey" : "black",
+          }}
         >
           <p
             style={{
-              textDecoration: product.soldOut ? "line-through" : "none",
+              textDecoration:
+                product.soldOut || !product.forSale ? "line-through" : "none",
             }}
           >
             {product.name} -{" "}
@@ -23,15 +26,23 @@ const Products = ({ products }) => {
             })}{" "}
             plus tax
           </p>
-          {product.soldOut ? <p>sold out</p> : null}
-          {product.soldOut ? null : (
+          {console.log(product)}
+          {/* If a product is sold out and NOT for sale, say sold out.*/}
+          {/* If a product is NOT available and NOT sold out, write nothing*/}
+          {product.soldOut && !product.forSale ? (
+            <p>sold out</p>
+          ) : !product.soldOut && product.forSale ? (
+            <p>available</p>
+          ) : null}
+          {/* If product is sold out or not for sale, don't show the cart buttons */}
+          {product.soldOut || !product.forSale ? null : (
             <Options>
               quantity
               <div>
                 <Button
                   onClick={() => addItem(product)}
                   aria-label="Add ticket to cart"
-                  disabled={product.soldOut ? true : false}
+                  disabled={product.soldOut || !product.forSale ? true : false}
                 >
                   +
                 </Button>
@@ -39,7 +50,7 @@ const Products = ({ products }) => {
                 <Button
                   onClick={() => decrementItem(product.id)}
                   aria-label="Remove a ticket from the cart"
-                  disabled={product.soldOut ? true : false}
+                  disabled={product.soldOut || !product.forSale ? true : false}
                 >
                   -
                 </Button>
@@ -75,7 +86,8 @@ const Options = styled.div`
   align-items: center;
   justify-content: flex-start;
 
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 const Button = styled.button`

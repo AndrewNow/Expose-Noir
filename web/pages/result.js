@@ -5,11 +5,13 @@ import { fetchGetJSON } from "../utils/apiHelpers";
 import styled from "styled-components";
 import { breakpoints } from "../components/utils/breakpoints";
 import { motion } from "framer-motion";
-// import PrintObject from "../components/printObject";
+import { client } from "../lib/sanity/client";
+import { paymentSuccessTextQuery } from "../lib/sanity/paymentSuccessTextQuery";
+import BlockContent from "@sanity/block-content-to-react";
 
-const ResultPage = () => {
+
+const ResultPage = ({ paymentSuccessText }) => {
   const router = useRouter();
-
   // Fetch CheckoutSession from static page via
   // https://nextjs.org/docs/basic-features/data-fetching#static-generation
 
@@ -56,22 +58,24 @@ const ResultPage = () => {
         a confirmation email will soon be sent your email at:{" "}
         {data?.payment_intent.charges.data[0].billing_details.email}
       </p>
-      <p>
-        please check your junk folder if not yet received - and we will email
-        you your ticket(s) within 24 hours. event location will be sent to you
-        one day before the event.
-      </p>
-      <p>
-        kindly note that we do not allow pictures or videos at our events.
-        please take care of one another, and immediately report any sign of
-        harassment, abuse, or agression to our nearest staff member.
-      </p>
+      <BlockContent blocks={paymentSuccessText[0]?.description} />
       <Link href="/">
         <a>↽ Back home</a>
       </Link>
     </Wrapper>
   );
 };
+
+export const getStaticProps = async () => {
+  const paymentSuccessText = await client.fetch(paymentSuccessTextQuery);
+
+  return {
+    props: {
+      paymentSuccessText,
+    },
+  };
+};
+
 
 export default ResultPage;
 

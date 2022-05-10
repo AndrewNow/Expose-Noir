@@ -11,9 +11,9 @@ export default function CartSummary() {
   const {
     formattedTotalPrice,
     cartCount,
-    clearCart,
     cartDetails,
     redirectToCheckout,
+    // clearCart,
   } = useShoppingCart();
 
   //sets our cartEmpty state with cart data
@@ -38,19 +38,16 @@ export default function CartSummary() {
     //if nothing went wrong, sends user to Stripe checkout
     redirectToCheckout({ sessionId: response.id });
   };
+
   return (
     <Form onSubmit={handleCheckout}>
       {/* This is where we'll render our cart;
-			The item count changes quickly and may
-			be mismatched between client and server.
-			To avoid annoying error messages,
-			we use 'supressHydrationWarning'.
+			The item count changes quickly and may be mismatched between client and server.
+			To avoid annoying error messages, we use 'supressHydrationWarning'.
 			https://reactjs.org/docs/dom-elements.html#suppresshydrationwarning*/}
 
       {/* <p suppressHydrationWarning>tickets: {cartCount}</p> */}
-      <p suppressHydrationWarning>total {formattedTotalPrice}</p>
-      {/* <p>Use 4242 4242 4242 4242 as the card number.</p> */}
-
+      <p suppressHydrationWarning>total {formattedTotalPrice} plus tax</p>
       <CheckoutButtons>
         <Button type="submit" disabled={cartEmpty || loading}>
           purchase <div className="card-number" />

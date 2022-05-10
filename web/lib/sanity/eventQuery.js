@@ -4,6 +4,7 @@ export const eventQuery = groq`
 *[_type=="event"] | order(price) {
     name,
     soldOut,
+    forSale,
     price,
     currency,
     "id": _id,

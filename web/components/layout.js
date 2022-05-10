@@ -36,8 +36,8 @@ const Main = styled.main`
   h4,
   h5,
   h6 {
-    font-family: sans-serif;
-    font-size: var(--font-sans);
+    font-family: monospace;
+    font-size: var(--font-mono);
     font-weight: 300;
   }
 

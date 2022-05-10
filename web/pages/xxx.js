@@ -2,6 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import Head from "next/head";
+
 const xxx = () => {
   return (
     <>
@@ -10,7 +11,13 @@ const xxx = () => {
         <meta name="description" content="xxx" />
       </Head>
       <Wrapper>
-        <Center>Enter video here</Center>
+        <Center>
+          <iframe
+            src="https://drive.google.com/file/d/15BrGB7iixa1yZe5R-GouOcCgyPLKXAT8/preview"
+            width="640"
+            height="480"
+          />
+        </Center>
         <br />
         <br />
         <Return href="/">↽ Return</Return>
@@ -40,7 +47,7 @@ const Wrapper = styled.div`
 `;
 
 const Center = styled.div`
-  animation: ${blink} 0.5s linear infinite alternate;
+  /* animation: ${blink} 0.5s linear infinite alternate; */
   margin-bottom: 2rem;
 `;
 

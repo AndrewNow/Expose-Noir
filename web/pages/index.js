@@ -238,14 +238,14 @@ const TripleX = styled(motion.div)`
 
   span {
     margin: 0 0.25rem;
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
   }
 `;
 
 const Button = styled.button`
   background: white;
   padding: 0 0.1rem;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
   font-size: var(--font-sans);
   font-weight: 300;
 

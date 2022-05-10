@@ -14,12 +14,31 @@ export default async function handler(req, res) {
     try {
       // Validate the cart details that were sent from the client.
       const cartItems = req.body;
+
       //Sanity client performs eventQuery
       let sanityData = await client.fetch(eventQuery);
-      // The POST request is then validated against the data from Sanity.
-      const line_items = validateCartItems(sanityData, cartItems);
-      // Create Checkout Sessions from body params.
 
+      // The POST request is then validated against the data from Sanity.
+      const validate_line_items = validateCartItems(sanityData, cartItems);
+
+      // create a shorthand for validate_line_items
+      const priceData = validate_line_items[0].price_data;
+
+      const price = await stripe.prices.create({
+        tax_behavior: "exclusive",
+        currency: priceData.currency,
+        product_data: priceData.product_data,
+        unit_amount: priceData.unit_amount,
+      });
+
+      const line_items = [
+        {
+          price: price.id,
+          quantity: validate_line_items[0].quantity,
+        },
+      ];
+
+      // Create Checkout Sessions from body params.
       const params = {
         submit_type: "pay",
         mode: "payment",
@@ -28,9 +47,12 @@ export default async function handler(req, res) {
         shipping_address_collection: {
           allowed_countries: ["US", "CA"],
         },
-
-        //The validated cart items are inserted.
+        //The cart items are inserted.
         line_items,
+        automatic_tax: {
+          // https://stripe.com/docs/payments/checkout/taxes
+          enabled: true,
+        },
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}`,
       };
