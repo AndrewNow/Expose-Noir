@@ -26,7 +26,6 @@ const Products = ({ products }) => {
             })}{" "}
             plus tax
           </p>
-          {console.log(product)}
           {/* If a product is sold out and NOT for sale, say sold out.*/}
           {/* If a product is NOT available and NOT sold out, write nothing*/}
           {product.soldOut && !product.forSale ? (

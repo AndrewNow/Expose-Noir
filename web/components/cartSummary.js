@@ -55,8 +55,8 @@ export default function CartSummary() {
       </CheckoutButtons>
       {checkoutAnimation ? (
         <>
-          <br />
-          <br />
+          {/* <br /> */}
+          {/* <br /> */}
           <GatewayAnimation>loading gateway</GatewayAnimation>
         </>
       ) : (
