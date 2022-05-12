@@ -2,8 +2,13 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import Head from "next/head";
+import { breakpoints } from "../components/utils/breakpoints";
+import { client } from "../lib/sanity/client";
+import { videoQuery } from "../lib/sanity/videoQuery";
 
-const xxx = () => {
+const xxx = ({ videoUrl }) => {
+  const vidUrl = videoUrl[0]?.url;
+  
   return (
     <>
       <Head>
@@ -12,11 +17,11 @@ const xxx = () => {
       </Head>
       <Wrapper>
         <Center>
-          <iframe
-            src="https://drive.google.com/file/d/15BrGB7iixa1yZe5R-GouOcCgyPLKXAT8/preview"
-            width="640"
-            height="480"
-          />
+          {vidUrl && (
+            <Video key={vidUrl} type="video/mp4" controls>
+              <source src={vidUrl} />
+            </Video>
+          )}
         </Center>
         <br />
         <br />
@@ -24,6 +29,15 @@ const xxx = () => {
       </Wrapper>
     </>
   );
+};
+
+export const getStaticProps = async () => {
+  const videoUrl = await client.fetch(videoQuery);
+  return {
+    props: {
+      videoUrl,
+    },
+  };
 };
 
 export default xxx;
@@ -49,6 +63,17 @@ const Wrapper = styled.div`
 const Center = styled.div`
   /* animation: ${blink} 0.5s linear infinite alternate; */
   margin-bottom: 2rem;
+  position: relative;
+  max-width: 500px;
+
+  @media (max-width: ${breakpoints.s}px) {
+    max-width: 90vw;
+  }
+`;
+
+const Video = styled.video`
+  width: 100%;
+  height: 100%;
 `;
 
 const Return = styled(Link)``;
