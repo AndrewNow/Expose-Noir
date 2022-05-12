@@ -8,7 +8,7 @@ import { videoQuery } from "../lib/sanity/videoQuery";
 
 const xxx = ({ videoUrl }) => {
   const vidUrl = videoUrl[0]?.url;
-  
+
   return (
     <>
       <Head>
@@ -18,7 +18,7 @@ const xxx = ({ videoUrl }) => {
       <Wrapper>
         <Center>
           {vidUrl && (
-            <Video key={vidUrl} type="video/mp4" controls>
+            <Video key={vidUrl} type="video/mp4" controls playsInline>
               <source src={vidUrl} />
             </Video>
           )}
