@@ -10,7 +10,6 @@ const FouroFour = () => {
         <title>404</title>
         <meta name="description" content="Oops! Broken route." />
         <meta name="og:title" content="Oops! Broken route." />
-        
       </Head>
       <Wrapper>
         <Center>You've reached a broken page!</Center>

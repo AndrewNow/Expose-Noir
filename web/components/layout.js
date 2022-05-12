@@ -8,6 +8,7 @@ export const Layout = (props) => {
       <Head>
         <link rel="icon" href="/xxxfavicon.png" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta property="og:image" content="https://i.imgur.com/ahNQuh2.png" />
       </Head>
       <Main>{props.children}</Main>
     </>
