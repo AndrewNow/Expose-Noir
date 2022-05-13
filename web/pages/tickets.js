@@ -233,6 +233,8 @@ const DescriptionHeader = styled.div`
 const ShopWrapper = styled(motion.div)`
   margin: 2rem;
   width: 250px;
+  position: sticky;
+  top: 7.5vh;
 
   @media (max-width: ${breakpoints.s}px) {
     max-width: 70vw;
