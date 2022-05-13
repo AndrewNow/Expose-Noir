@@ -6,6 +6,8 @@ import schemaTypes from "all:part:@sanity/base/schema-type";
 import blockContent from "./blockContent";
 import event from "./event";
 import eventDescription from "./eventDescription";
+import paymentSuccess from "./paymentSuccess";
+import videoEmbed from "./videoEmbed";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -20,5 +22,7 @@ export default createSchema({
     event,
     eventDescription,
     blockContent,
+    paymentSuccess,
+    videoEmbed
   ]),
 });

@@ -10,11 +10,13 @@ export default function Home() {
   const [showResults, setShowResults] = useState(null);
   const [userText, setUserText] = useState("");
 
-  const handleUserYes = () => {
+  const handleUserYes = (e) => {
+    e.stopPropagation;
     setShowResults(true);
     setUserText("y");
   };
-  const handleUserNo = () => {
+  const handleUserNo = (e) => {
+    e.stopPropagation;
     setShowResults(false);
     setUserText("n");
   };
@@ -107,7 +109,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>exposé noir</title>
+        <title>Exposé Noir</title>
         <meta name="description" content="Exposé Noir | Home" />
       </Head>
       <PageWrapper>
@@ -235,6 +237,11 @@ const TripleX = styled(motion.div)`
   display: flex;
   flex-direction: row;
   justify-content: center;
+
+  h2 {
+    font-size: 16px;
+    font-family: sans-serif;
+  }
 
   span {
     margin: 0 0.25rem;

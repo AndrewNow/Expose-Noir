@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import Link from "next/link";
 import Head from "next/head";
 import { breakpoints } from "../components/utils/breakpoints";
 import { client } from "../lib/sanity/client";
@@ -23,9 +22,6 @@ const xxx = ({ videoUrl }) => {
             </Video>
           )}
         </Center>
-        <br />
-        <br />
-        <Return href="/">↽ Return</Return>
       </Wrapper>
     </>
   );
@@ -75,5 +71,3 @@ const Video = styled.video`
   width: 100%;
   height: 100%;
 `;
-
-const Return = styled(Link)``;

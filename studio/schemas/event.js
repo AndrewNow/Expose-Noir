@@ -10,9 +10,19 @@ export default {
     },
     {
       title: "Sold out?",
-      description: "When green, tickets will not be available to purchase.",
+      description: "When checked, tickets will not be available to purchase.",
       name: "soldOut",
       type: "boolean",
+      options: {
+        layout: "checkbox",
+      },
+    },
+    {
+      title: "For sale?",
+      description: "When checked, tickets will be available for sale. Once one sells out, untick this box.",
+      name: "forSale",
+      type: "boolean",
+      initialValue: false,
       options: {
         layout: "checkbox",
       },
