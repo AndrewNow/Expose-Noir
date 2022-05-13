@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
-import { breakpoints } from "../components/utils/breakpoints";
+import { breakpoints } from "../utils/breakpoints";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
@@ -83,6 +83,17 @@ export default function Home() {
       },
     },
   };
+  
+  const staggerChild = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: [0, 1, 0, 1],
+      transition: {
+        duration: 0.5,
+        ease: "linear",
+      },
+    },
+  };
 
   const delayBottomAnimation = {
     hidden: { opacity: 0 },
@@ -91,17 +102,6 @@ export default function Home() {
       transition: {
         delay: 1.5,
         staggerChildren: 0.5,
-      },
-    },
-  };
-
-  const staggerChild = {
-    hidden: { opacity: 0 },
-    animate: {
-      opacity: [0, 1, 0, 1],
-      transition: {
-        duration: 0.5,
-        ease: "linear",
       },
     },
   };

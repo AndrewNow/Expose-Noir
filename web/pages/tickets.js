@@ -8,11 +8,13 @@ import MailchimpFormContainer from "../components/Mailchimp/mailchimpFormContain
 import { client } from "../lib/sanity/client";
 import { eventDescriptionQuery } from "../lib/sanity/eventDescriptionQuery";
 import { eventQuery } from "../lib/sanity/eventQuery";
-import BlockContent from "@sanity/block-content-to-react";
+import { PortableText } from "@portabletext/react";
+import SanityImageComponent from "../utils/sanityImageComponent";
 import urlFor from "../lib/sanity/urlFor";
-import { breakpoints } from "../components/utils/breakpoints";
+import { breakpoints } from "../utils/breakpoints";
 import Head from "next/head";
-
+import Link from 'next/link'
+  
 const Tickets = ({ eventDescription, products }) => {
   // logic for converting ISO date into regular human-readable format below
   const event = eventDescription[0];
@@ -97,7 +99,14 @@ const Tickets = ({ eventDescription, products }) => {
         {eventDescription[0] ? (
           <DescriptionWrapper variants={staggerChild}>
             <WrapMarkdown>
-              <BlockContent blocks={event?.description} />
+              <PortableText
+                value={event?.description}
+                components={{
+                  types: {
+                    image: SanityImageComponent,
+                  },
+                }}
+              />
             </WrapMarkdown>
             <DownloadPoster
               href={urlFor(event?.image)}
@@ -107,6 +116,9 @@ const Tickets = ({ eventDescription, products }) => {
             >
               download poster
             </DownloadPoster>{" "}
+            <br />
+            <br />
+            <Link href='/past'>past bookings</Link>
             <br />
             <br />
             <a href="mailto:complaints@exposenoir.com">
@@ -235,6 +247,13 @@ const DownloadPoster = styled.a`
 
 const WrapMarkdown = styled.div`
   margin: 2.5rem 0;
+  position: relative;
+  max-width: 100%;
+
+  img {
+    margin: 1rem 0;
+    max-width: 100%;
+  }
 
   p {
     margin-bottom: 2rem;
