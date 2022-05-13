@@ -196,6 +196,7 @@ export default Tickets;
 const Wrapper = styled(motion.div)`
   /* max-width: 600px; */
   padding-top: 7.5vh;
+  padding-bottom: 2rem;
   margin: 0 auto;
   display: flex;
   justify-content: center;
