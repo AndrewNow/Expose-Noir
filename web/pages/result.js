@@ -3,7 +3,7 @@ import Link from "next/link";
 import useSWR from "swr";
 import { fetchGetJSON } from "../utils/apiHelpers";
 import styled from "styled-components";
-import { breakpoints } from "../components/utils/breakpoints";
+import { breakpoints } from "../utils/breakpoints";
 import { motion } from "framer-motion";
 import { client } from "../lib/sanity/client";
 import { paymentSuccessTextQuery } from "../lib/sanity/paymentSuccessTextQuery";

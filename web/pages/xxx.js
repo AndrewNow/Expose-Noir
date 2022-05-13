@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import Head from "next/head";
-import { breakpoints } from "../components/utils/breakpoints";
+import { breakpoints } from "../utils/breakpoints";
 import { client } from "../lib/sanity/client";
 import { videoQuery } from "../lib/sanity/videoQuery";
 
