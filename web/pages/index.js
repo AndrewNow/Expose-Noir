@@ -10,13 +10,11 @@ export default function Home() {
   const [showResults, setShowResults] = useState(null);
   const [userText, setUserText] = useState("");
 
-  const handleUserYes = (e) => {
-    e.stopPropagation;
+  const handleUserYes = () => {
     setShowResults(true);
     setUserText("y");
   };
-  const handleUserNo = (e) => {
-    e.stopPropagation;
+  const handleUserNo = () => {
     setShowResults(false);
     setUserText("n");
   };
