@@ -81,7 +81,7 @@ export default function Home() {
       },
     },
   };
-  
+
   const staggerChild = {
     hidden: { opacity: 0 },
     animate: {
@@ -261,8 +261,7 @@ const Button = styled.button`
     margin-left: 0.25rem;
   }
 
-  :hover,
-  :focus {
+  :hover {
     color: white;
     background: black;
     animation: ${blink} 0.5s linear alternate;
