@@ -71,12 +71,12 @@ const Wrapper = styled(motion.div)`
 `;
 
 const DescriptionWrapper = styled(motion.div)`
-  max-width: 300px;
-  min-width: 300px;
+  max-width: 340px;
+  min-width: 340px;
   margin: 0 2rem;
   margin-bottom: 3rem;
   @media (max-width: ${breakpoints.m}px) {
     max-width: 70vw;
-    width: 250px;
+    width: 340px;
   }
 `;
