@@ -19,7 +19,7 @@ const PrintDjNames = (djData) => {
     <Artist
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onClick={() => setHover(!hover)}
+      // onClick={() => setHover(!hover)}
     >
       {djData.djData.djName}
       {hover && (

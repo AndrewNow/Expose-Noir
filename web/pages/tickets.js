@@ -19,8 +19,8 @@ const Tickets = ({ eventDescription, products }) => {
   // logic for converting ISO date into regular human-readable format below
   const event = eventDescription[0];
 
-  const d = new Date(`${event.launchAt}`);
-  const e = new Date(`${event.endAt}`);
+  const d = new Date(`${event?.launchAt}`);
+  const e = new Date(`${event?.endAt}`);
 
   const months = [
     "January",
