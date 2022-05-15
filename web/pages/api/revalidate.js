@@ -21,6 +21,7 @@ const getPathToRevalidate = (body) => {
     default:
       return null;
   }
+}
 
   export async function handler(request, response) {
     const Authorization = request.headers.authorization || "";
