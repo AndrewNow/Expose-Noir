@@ -23,9 +23,9 @@ export async function handler(request, response) {
     return response.status(405).send("Method Not Allowed");
   }
 
-  // if (token !== process.env.NEXT_SANITY_WEBHOOK_SECRET) {
-  //   return response.status(401).send("Invalid token");
-  // }
+  if (token !== process.env.NEXT_SANITY_WEBHOOK_SECRET) {
+    return response.status(401).send("Invalid token");
+  }
 
   try {
     const path = getPathToRevalidate(request.body);
