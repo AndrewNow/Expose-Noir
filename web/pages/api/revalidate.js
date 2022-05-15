@@ -1,3 +1,14 @@
+const getPathToRevalidate = (body) => {
+  switch (body._type) {
+    case "post": {
+      return `/` + body.slug.current;
+    }
+    // Your other cases for other types here
+    default:
+      return null;
+  }
+};
+
 export async function handler(request, response) {
   const Authorization = request.headers.authorization || "";
   const token = Authorization.replace(/bearer/i, "").trim();
@@ -23,14 +34,3 @@ export async function handler(request, response) {
     return response.status(500).send("Internal Server Error");
   }
 }
-
-const getPathToRevalidate = (body) => {
-  switch (body._type) {
-    case "post": {
-      return `/` + body.slug.current;
-    }
-    // Your other cases for other types here
-    default:
-      return null;
-  }
-};
