@@ -188,6 +188,7 @@ export const getStaticProps = async () => {
       products,
       eventDescription,
     },
+    revalidate: 20,
   };
 };
 
