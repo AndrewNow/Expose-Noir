@@ -1,23 +1,17 @@
 const getPathToRevalidate = (body) => {
   switch (body._type) {
-    case "eventDescription": {
+    case "eventDescription":
       return `/tickets`;
-    }
-    case "event": {
+    case "event":
       return `/tickets`;
-    }
-    case "post": {
+    case "post":
       return `/`;
-    }
-    case "pastBookings": {
+    case "pastBookings":
       return `/past`;
-    }
-    case "paymentSuccess": {
+    case "paymentSuccess":
       return `/result`;
-    }
-    case "videoEmbed": {
+    case "videoEmbed":
       return `/xxx`;
-    }
     default:
       return null;
   }
