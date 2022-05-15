@@ -73,6 +73,7 @@ export const getStaticProps = async () => {
     props: {
       paymentSuccessText,
     },
+    revalidate: 10,
   };
 };
 
