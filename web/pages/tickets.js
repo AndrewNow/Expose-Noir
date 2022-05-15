@@ -13,8 +13,8 @@ import SanityImageComponent from "../utils/sanityImageComponent";
 import urlFor from "../lib/sanity/urlFor";
 import { breakpoints } from "../utils/breakpoints";
 import Head from "next/head";
-import Link from 'next/link'
-  
+import Link from "next/link";
+
 const Tickets = ({ eventDescription, products }) => {
   // logic for converting ISO date into regular human-readable format below
   const event = eventDescription[0];
@@ -118,7 +118,7 @@ const Tickets = ({ eventDescription, products }) => {
             </DownloadPoster>{" "}
             <br />
             <br />
-            <Link href='/past'>past bookings</Link>
+            <Link href="/past">past bookings</Link>
             <br />
             <br />
             <a href="mailto:complaints@exposenoir.com">

@@ -149,10 +149,8 @@ export default function Home() {
                     <Cursor />
                   </ContinueInput>
                   <ContinueButtons>
-                    <h3>
-                      [<Button onClick={handleUserYes}>y </Button>/
-                      <Button onClick={handleUserNo}> n</Button>]
-                    </h3>
+                    [<Button onClick={handleUserYes}>y </Button>/
+                    <Button onClick={handleUserNo}> n</Button>]
                   </ContinueButtons>
                 </Continue>
               )}
