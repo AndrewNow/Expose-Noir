@@ -33,7 +33,6 @@ export const getStaticProps = async () => {
     props: {
       videoUrl,
     },
-    revalidate: 20,
   };
 };
 

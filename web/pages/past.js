@@ -53,7 +53,6 @@ export const getStaticProps = async () => {
     props: {
       pastBookings,
     },
-    revalidate: 20
   };
 };
 

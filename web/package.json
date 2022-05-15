@@ -13,6 +13,7 @@
     "@sanity/block-content-to-react": "^2.0.7",
     "@sanity/client": "^2.2.6",
     "@sanity/image-url": "^0.140.22",
+    "@sanity/webhook": "^1.0.2",
     "@stripe/stripe-js": "^1.28.0",
     "framer-motion": "^6.3.2",
     "groq": "^2.29.3",

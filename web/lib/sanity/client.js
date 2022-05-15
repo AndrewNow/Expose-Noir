@@ -4,5 +4,5 @@ export const client = sanityClient({
   dataset: "expose-noir",
   apiVersion: '2022-04-27',
   //   token: 'sanity-auth-token', // or leave commented out to be anonymous user
-  useCdn: true, // `false` if you want to ensure fresh data
+  useCdn: false, // `false` if you want to ensure fresh data
 });
