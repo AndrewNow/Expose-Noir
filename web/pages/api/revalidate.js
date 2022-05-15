@@ -4,8 +4,6 @@ const getPathToRevalidate = (body) => {
       return `/tickets`;
     case "event":
       return `/tickets`;
-    case "post":
-      return `/`;
     case "pastBookings":
       return `/past`;
     case "paymentSuccess":
