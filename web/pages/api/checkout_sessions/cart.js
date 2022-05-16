@@ -45,6 +45,7 @@ export default async function handler(req, res) {
         mode: "payment",
         payment_method_types: ["card"],
         billing_address_collection: "auto",
+        // uncomment to enable shipping collection
         // shipping_address_collection: {
         //   allowed_countries: ["US", "CA"],
         // },

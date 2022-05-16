@@ -55,7 +55,7 @@ const ResultPage = ({ paymentSuccessText }) => {
         {" <3"}
       </h2>
       <p>
-        a confirmation email will soon be sent your email at:{" "}
+        a confirmation email will soon be sent to your email at:{" "}
         {data?.payment_intent.charges.data[0].billing_details.email}
       </p>
       <BlockContent blocks={paymentSuccessText[0]?.description} />
