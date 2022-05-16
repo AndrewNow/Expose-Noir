@@ -234,6 +234,7 @@ const TripleX = styled(motion.div)`
   flex-direction: row;
   justify-content: center;
 
+
   h2 {
     font-size: 16px;
     font-family: sans-serif;
@@ -248,7 +249,6 @@ const TripleX = styled(motion.div)`
 const Button = styled.button`
   background: white;
   padding: 0 0.1rem;
-  /* font-family: sans-serif; */
   font-size: var(--font-sans);
   font-weight: 300;
 
@@ -266,6 +266,9 @@ const Button = styled.button`
   }
   @media (max-width: ${breakpoints.s}px) {
     padding: 0 0.25rem;
+    :hover {
+      animation: none;
+    }
   }
 `;
 
