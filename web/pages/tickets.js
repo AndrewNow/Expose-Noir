@@ -138,19 +138,19 @@ const Tickets = ({ eventDescription, products }) => {
           <DescriptionWrapper>
             <WindupChildren onFinished={() => setTypeWriterFinished(true)}>
               <p>
-                <Pace getPace={(char) => (char === " " ? 70 : 40)}>
+                <Pace getPace={(char) => (char === " " ? 70 : 50)}>
                   {event?.sentence1}
                 </Pace>
               </p>
               {event?.sentence2 && (
                 <>
-                  <Pause ms={800} />
+                  <Pause ms={1000} />
                   <p>
-                    <Pace getPace={(char) => (char === " " ? 70 : 40)}>
+                    <Pace getPace={(char) => (char === " " ? 70 : 50)}>
                       {event?.sentence2}
                     </Pace>
                   </p>
-                  <Pause ms={500} />
+                  <Pause ms={1000} />
                 </>
               )}
             </WindupChildren>
@@ -268,6 +268,25 @@ export const getStaticProps = async () => {
 };
 
 export default Tickets;
+
+
+const blink = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const Cursor = styled.div`
+  animation: ${blink} 0.5s linear alternate infinite;
+  width: 10px;
+  height: 20px;
+  margin: 0.25rem 0;
+  background-color: black;
+  display: inline-block;
+`;
 
 const Wrapper = styled.div`
   /* max-width: 600px; */
