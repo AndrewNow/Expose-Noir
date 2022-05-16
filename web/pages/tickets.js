@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import styled, { keyframes } from "styled-components";
 import Cart from "../components/cart";
@@ -14,6 +14,7 @@ import urlFor from "../lib/sanity/urlFor";
 import { breakpoints } from "../utils/breakpoints";
 import Head from "next/head";
 import Link from "next/link";
+import { WindupChildren, Pause, Pace } from "windups";
 
 const Tickets = ({ eventDescription, products }) => {
   // logic for converting ISO date into regular human-readable format below
@@ -76,12 +77,33 @@ const Tickets = ({ eventDescription, products }) => {
     },
   };
 
+  const shopLoadAnim = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: 1,
+      transition: {
+        delay: 0.25,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
   const staggerChild = {
     hidden: { opacity: 0 },
     animate: {
       opacity: [0, 1, 0, 1],
       transition: {
-        duration: 0.25,
+        duration: 0.5,
+        ease: "linear",
+      },
+    },
+  };
+  const staggerChildSlow = {
+    hidden: { opacity: 0 },
+    animate: {
+      opacity: [0, 1, 0, 1],
+      transition: {
+        duration: 0.5,
         ease: "linear",
       },
     },
@@ -89,44 +111,81 @@ const Tickets = ({ eventDescription, products }) => {
 
   const [ticketOpen, setTicketOpen] = useState(false);
 
+  useEffect(() => {
+    if (event?.sentence1 || event?.sentence2) {
+      setTypeWriterFinished(false);
+    }
+  }, []);
+
+  const [typeWriterFinished, setTypeWriterFinished] = useState(false);
+
   return (
     <>
       <Head>
         <title>tickets</title>
         <meta name="description" content="Exposé Noir | Ticketing" />
       </Head>
-      <Wrapper variants={initialLoadAnim} initial="hidden" animate="animate">
+      <Wrapper>
         {eventDescription[0] ? (
-          <DescriptionWrapper variants={staggerChild}>
-            <WrapMarkdown>
-              <PortableText
-                value={event?.description}
-                components={{
-                  types: {
-                    image: SanityImageComponent,
-                  },
-                }}
-              />
-            </WrapMarkdown>
-            <DownloadPoster
-              href={urlFor(event?.image)}
-              aria-label="download poster"
-              target="_blank"
-              download={`${event.name}_poster`}
+          <DescriptionWrapper>
+            <WindupChildren onFinished={() => setTypeWriterFinished(true)}>
+              <p>
+                <Pace getPace={(char) => (char === " " ? 100 : 40)}>
+                  {event?.sentence1}
+                </Pace>
+              </p>
+              {event?.sentence2 && (
+                <>
+                  <Pause ms={800} />
+                  <p>
+                    <Pace getPace={(char) => (char === " " ? 100 : 40)}>
+                      {event?.sentence2}
+                    </Pace>
+                  </p>
+                  <Pause ms={500} />
+                </>
+              )}
+            </WindupChildren>
+            <motion.div
+              variants={initialLoadAnim}
+              initial="hidden"
+              animate={typeWriterFinished ? "animate" : "hidden"}
+              // animate="animate"
             >
-              download poster
-            </DownloadPoster>{" "}
-            <br />
-            <br />
-            <Link href="/past">past bookings</Link>
-            <br />
-            <br />
-            <a href="mailto:complaints@exposenoir.com">
-              complaints@exposenoir.com
-            </a>
+              <motion.div variants={staggerChildSlow}>
+                <WrapMarkdown>
+                  <PortableText
+                    value={event?.description}
+                    components={{
+                      types: {
+                        image: SanityImageComponent,
+                      },
+                    }}
+                  />
+                </WrapMarkdown>
+                <DownloadPoster
+                  href={urlFor(event?.image)}
+                  aria-label="download poster"
+                  target="_blank"
+                  download={`${event.name}_poster`}
+                >
+                  download poster
+                </DownloadPoster>{" "}
+                <br />
+                <Link href="/past">past bookings</Link>
+                <br />
+                <a href="mailto:complaints@exposenoir.com">
+                  complaints@exposenoir.com
+                </a>
+              </motion.div>
+            </motion.div>
           </DescriptionWrapper>
         ) : (
-          <NoEvents variants={staggerChild}>
+          <NoEvents
+            variants={initialLoadAnim}
+            initial="hidden"
+            animate="animate"
+          >
             <p>
               No events planned at the moment, but you can subscribe to our
               newsletter in the meantime for updates.
@@ -139,40 +198,46 @@ const Tickets = ({ eventDescription, products }) => {
           </NoEvents>
         )}
         {eventDescription[0] && (
-          <ShopWrapper variants={staggerChild}>
-            <TicketLineWrapper>
-              <TicketTitleButton onClick={() => setTicketOpen(!ticketOpen)}>
-                <h2>tickets</h2>
-              </TicketTitleButton>
-              {!ticketOpen && (
-                <SmileyWidth>
-                  <AnimateSmiley>:)</AnimateSmiley>
-                </SmileyWidth>
-              )}
-            </TicketLineWrapper>
-            <AnimatePresence exitBeforeEnter>
-              {ticketOpen && (
-                <motion.div variants={staggerChild} exit="hidden">
-                  <DescriptionHeader>
-                    <h3>{event?.name}</h3>
-                    <p>
-                      {event?.launchAt && (
-                        <span>
-                          {month} {date}, {year}. {fullTimeStart} to{" "}
-                          {fullTimeEnd}
-                        </span>
-                      )}
-                    </p>
-                    <p>{event?.location}</p>
-                  </DescriptionHeader>
-                  <Cart>
-                    <Products products={products} />
-                    <CartSummary />
-                  </Cart>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </ShopWrapper>
+          <motion.div
+            variants={shopLoadAnim}
+            initial="hidden"
+            animate={typeWriterFinished ? "animate" : "hidden"}
+          >
+            <ShopWrapper variants={staggerChild}>
+              <TicketLineWrapper>
+                <TicketTitleButton onClick={() => setTicketOpen(!ticketOpen)}>
+                  <h2>tickets</h2>
+                </TicketTitleButton>
+                {!ticketOpen && (
+                  <SmileyWidth>
+                    <AnimateSmiley>:)</AnimateSmiley>
+                  </SmileyWidth>
+                )}
+              </TicketLineWrapper>
+              <AnimatePresence exitBeforeEnter>
+                {ticketOpen && (
+                  <motion.div variants={staggerChild} exit="hidden">
+                    <DescriptionHeader>
+                      <h3>{event?.name}</h3>
+                      <p>
+                        {event?.launchAt && (
+                          <span>
+                            {month} {date}, {year}. {fullTimeStart} to{" "}
+                            {fullTimeEnd}
+                          </span>
+                        )}
+                      </p>
+                      <p>{event?.location}</p>
+                    </DescriptionHeader>
+                    <Cart>
+                      <Products products={products} />
+                      <CartSummary />
+                    </Cart>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </ShopWrapper>
+          </motion.div>
         )}
       </Wrapper>
     </>
@@ -194,7 +259,7 @@ export const getStaticProps = async () => {
 
 export default Tickets;
 
-const Wrapper = styled(motion.div)`
+const Wrapper = styled.div`
   /* max-width: 600px; */
   padding-top: 7.5vh;
   padding-bottom: 2rem;
@@ -210,7 +275,15 @@ const Wrapper = styled(motion.div)`
 
 const DescriptionWrapper = styled(motion.div)`
   max-width: 200px;
-  margin: 0 2rem;
+  margin: 2rem;
+  p {
+    margin-top: 0rem;
+    margin-bottom: 2rem;
+  }
+  a {
+    display: inline-block;
+    padding: 0.25rem 0;
+  }
   @media (max-width: ${breakpoints.s}px) {
     max-width: 70vw;
     width: 250px;
@@ -249,18 +322,14 @@ const DownloadPoster = styled.a`
   cursor: pointer;
 `;
 
-const WrapMarkdown = styled.div`
-  margin: 2.5rem 0;
+const WrapMarkdown = styled(motion.div)`
+  /* margin: 2.5rem 0; */
   position: relative;
   max-width: 100%;
 
   img {
     margin: 1rem 0;
     max-width: 100%;
-  }
-
-  p {
-    margin-bottom: 2rem;
   }
 `;
 
