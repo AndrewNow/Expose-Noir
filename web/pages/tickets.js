@@ -112,6 +112,7 @@ const Tickets = ({ eventDescription, products }) => {
   const [ticketOpen, setTicketOpen] = useState(false);
 
   // typewriter effect logic
+  // https://windups.gwil.co/
 
   // wait for the typewriter animation to finish before showing the rest of the content
   const [typeWriterFinished, setTypeWriterFinished] = useState(false);
@@ -158,7 +159,6 @@ const Tickets = ({ eventDescription, products }) => {
               variants={initialLoadAnim}
               initial="hidden"
               animate={typeWriterFinished ? "animate" : "hidden"}
-              // animate="animate"
             >
               <motion.div variants={staggerChildSlow}>
                 <WrapMarkdown>
@@ -208,12 +208,12 @@ const Tickets = ({ eventDescription, products }) => {
           </NoEvents>
         )}
         {eventDescription[0] && (
-          <motion.div
+          <ShopWrapper
             variants={shopLoadAnim}
             initial="hidden"
             animate={typeWriterFinished ? "animate" : "hidden"}
           >
-            <ShopWrapper variants={staggerChild}>
+            <Sticky variants={staggerChild}>
               <TicketLineWrapper>
                 <TicketTitleButton onClick={() => setTicketOpen(!ticketOpen)}>
                   <h2>tickets</h2>
@@ -246,8 +246,8 @@ const Tickets = ({ eventDescription, products }) => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </ShopWrapper>
-          </motion.div>
+            </Sticky>
+          </ShopWrapper>
         )}
       </Wrapper>
     </>
@@ -268,25 +268,6 @@ export const getStaticProps = async () => {
 };
 
 export default Tickets;
-
-
-const blink = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const Cursor = styled.div`
-  animation: ${blink} 0.5s linear alternate infinite;
-  width: 10px;
-  height: 20px;
-  margin: 0.25rem 0;
-  background-color: black;
-  display: inline-block;
-`;
 
 const Wrapper = styled.div`
   /* max-width: 600px; */
@@ -334,6 +315,16 @@ const DescriptionHeader = styled.div`
 `;
 
 const ShopWrapper = styled(motion.div)`
+
+  @media (max-width: ${breakpoints.s}px) {
+    max-width: 70vw;
+    width: 250px;
+    margin: 0rem auto;
+    margin-bottom: 1rem;
+  }
+`;
+
+const Sticky = styled(motion.div)`
   margin: 2rem;
   width: 250px;
   position: sticky;
