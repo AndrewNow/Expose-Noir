@@ -171,14 +171,16 @@ const Tickets = ({ eventDescription, products }) => {
                     }}
                   />
                 </WrapMarkdown>
-                <DownloadPoster
-                  href={urlFor(event?.image)}
-                  aria-label="download poster"
-                  target="_blank"
-                  download={`${event.name}_poster`}
-                >
-                  download poster
-                </DownloadPoster>{" "}
+                {event?.image && (
+                  <DownloadPoster
+                    href={urlFor(event?.image)}
+                    aria-label="download poster"
+                    target="_blank"
+                    download={`${event.name}_poster`}
+                  >
+                    download poster
+                  </DownloadPoster>
+                )}
                 <br />
                 <Link href="/past">past bookings</Link>
                 <br />
