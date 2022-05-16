@@ -111,13 +111,21 @@ const Tickets = ({ eventDescription, products }) => {
 
   const [ticketOpen, setTicketOpen] = useState(false);
 
+  // typewriter effect logic
+
+  // wait for the typewriter animation to finish before showing the rest of the content
+  const [typeWriterFinished, setTypeWriterFinished] = useState(false);
+
   useEffect(() => {
     if (event?.sentence1 || event?.sentence2) {
       setTypeWriterFinished(false);
     }
+    // if no string for sentence 1 or 2, just skip the typewriter delay
+    // to load the rest of the content immediately.
+    else {
+      setTypeWriterFinished(true);
+    }
   }, []);
-
-  const [typeWriterFinished, setTypeWriterFinished] = useState(false);
 
   return (
     <>
@@ -130,7 +138,7 @@ const Tickets = ({ eventDescription, products }) => {
           <DescriptionWrapper>
             <WindupChildren onFinished={() => setTypeWriterFinished(true)}>
               <p>
-                <Pace getPace={(char) => (char === " " ? 100 : 40)}>
+                <Pace getPace={(char) => (char === " " ? 70 : 40)}>
                   {event?.sentence1}
                 </Pace>
               </p>
@@ -138,7 +146,7 @@ const Tickets = ({ eventDescription, products }) => {
                 <>
                   <Pause ms={800} />
                   <p>
-                    <Pace getPace={(char) => (char === " " ? 100 : 40)}>
+                    <Pace getPace={(char) => (char === " " ? 70 : 40)}>
                       {event?.sentence2}
                     </Pace>
                   </p>
