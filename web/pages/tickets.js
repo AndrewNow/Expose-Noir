@@ -315,7 +315,8 @@ const DescriptionHeader = styled.div`
 `;
 
 const ShopWrapper = styled(motion.div)`
-
+  position: sticky;
+  top: 7.5vh;
   @media (max-width: ${breakpoints.s}px) {
     max-width: 70vw;
     width: 250px;
@@ -327,8 +328,7 @@ const ShopWrapper = styled(motion.div)`
 const Sticky = styled(motion.div)`
   margin: 2rem;
   width: 250px;
-  position: sticky;
-  top: 7.5vh;
+
 
   @media (max-width: ${breakpoints.s}px) {
     max-width: 70vw;
