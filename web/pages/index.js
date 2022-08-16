@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { breakpoints } from "../utils/breakpoints";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Image from "next/image";
 
 export default function Home() {
   // 1. Handlers for when user clicks on [ y / n ]
@@ -98,11 +99,15 @@ export default function Home() {
     animate: {
       opacity: 1,
       transition: {
-        delay: 1.5,
+        // !!
+        // delay: 1.5,
         staggerChildren: 0.5,
       },
     },
   };
+
+  // image hover state
+  const [hover, setHover] = useState(false);
 
   return (
     <>
@@ -112,7 +117,22 @@ export default function Home() {
       </Head>
       <PageWrapper>
         <Container>
-          <TripleX
+          <motion.span
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            variants={initialLoadAnim}
+            initial="hidden"
+            animate="animate"
+          >
+            <Image
+              src={hover ? "/biosphere.gif" : "/biosphere.jpg"}
+              alt="Illustration of Montreal's Biosphere on fire, with a rave smiley face superimposed on the dome."
+              width={337}
+              height={555}
+              quality={70}
+            />
+          </motion.span>
+          {/* <TripleX
             variants={initialLoadAnim}
             initial="hidden"
             animate="animate"
@@ -126,7 +146,7 @@ export default function Home() {
             <motion.span variants={staggerChild}>
               <h2>X</h2>
             </motion.span>
-          </TripleX>
+          </TripleX> */}
           <BottomSection
             variants={delayBottomAnimation}
             initial="hidden"
@@ -181,9 +201,27 @@ const PageWrapper = styled.div`
   overflow-y: hidden;
 `;
 
+// OLD CONTAINER FOR XXX ANIMATION
+// const Container = styled.section`
+//   width: 200px;
+//   height: 252px;
+
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate3D(-50%, -50%, 0);
+
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-start;
+//   margin: 3rem auto;
+//   @media (max-width: ${breakpoints.s}px) {
+//     bottom: 10vh;
+//   }
+// `;
 const Container = styled.section`
-  width: 200px;
-  height: 252px;
+  width: 300px;
+  height: auto;
 
   position: absolute;
   top: 50%;
@@ -194,8 +232,13 @@ const Container = styled.section`
   flex-direction: column;
   justify-content: flex-start;
   margin: 3rem auto;
+
+  @media (max-width: ${breakpoints.l}px) {
+    width: 250px;
+  }
+
   @media (max-width: ${breakpoints.s}px) {
-    bottom: 10vh;
+    width: 180px;
   }
 `;
 
@@ -218,6 +261,9 @@ const ContinueInput = styled.div`
   justify-content: center;
   align-items: center;
 
+  /* !! */
+  color: #0032a1;
+
   :first-of-type(h3) {
     padding-right: 0.25rem;
   }
@@ -225,32 +271,35 @@ const ContinueInput = styled.div`
 
 const ContinueButtons = styled.div`
   margin: 1rem auto;
+  /* !! */
+  color: #0032a1;
 `;
 
-const TripleX = styled(motion.div)`
-  margin: 0 auto;
-  margin-bottom: 10rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+// const TripleX = styled(motion.div)`
+//   margin: 0 auto;
+//   margin-bottom: 10rem;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
 
+//   h2 {
+//     font-size: 16px;
+//     font-family: sans-serif;
+//   }
 
-  h2 {
-    font-size: 16px;
-    font-family: sans-serif;
-  }
-
-  span {
-    margin: 0 0.25rem;
-    /* font-family: sans-serif; */
-  }
-`;
+//   span {
+//     margin: 0 0.25rem;
+//     /* font-family: sans-serif; */
+//   }
+// `;
 
 const Button = styled.button`
   background: white;
   padding: 0 0.1rem;
   font-size: var(--font-sans);
   font-weight: 300;
+  /* !! */
+  color: #0032a1 !important;
 
   :first-child {
     margin-right: 0.25rem;
@@ -260,8 +309,9 @@ const Button = styled.button`
   }
 
   :hover {
-    color: white;
-    background: black;
+    color: white !important;
+    /* background: black; */
+    background: #0032a1;
     animation: ${blink} 0.5s linear alternate;
   }
   @media (max-width: ${breakpoints.s}px) {
@@ -277,7 +327,9 @@ const Cursor = styled.div`
   width: 10px;
   height: 20px;
   margin: 0.25rem 0;
-  background-color: black;
+  /* !! */
+  /* background-color: black; */
+  background-color: #0032a1;
   display: inline-block;
 `;
 
@@ -289,9 +341,8 @@ const UserText = styled.span`
 
 const ellipsis = keyframes`
   to {
-    width: 30px;    
+    width: 30px;
   }
-}
 `;
 
 const UserPressedYes = styled.div`
@@ -300,6 +351,8 @@ const UserPressedYes = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  /* !! */
+  color: #0032a1 !important;
   ::after {
     overflow: hidden;
     display: inline-block;

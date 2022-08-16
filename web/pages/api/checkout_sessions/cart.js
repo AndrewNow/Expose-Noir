@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       // Validate the cart details that were sent from the client.
       const cartItems = req.body;
 
-      //Sanity client performs eventQuery
+      // Sanity client performs eventQuery
       let sanityData = await client.fetch(eventQuery);
 
       // The POST request is then validated against the data from Sanity.
