@@ -6,7 +6,8 @@ export const Layout = (props) => {
   return (
     <>
       <Head>
-        <link rel="icon" href="/xxxfavicon.png" />
+        <link rel="icon" href="/bluefavicon.png" />
+        {/* <link rel="icon" href="/xxxfavicon.png" /> */}
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Main>{props.children}</Main>

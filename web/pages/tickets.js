@@ -286,6 +286,12 @@ const Wrapper = styled.div`
 const DescriptionWrapper = styled(motion.div)`
   max-width: 200px;
   margin: 2rem;
+
+  *,
+  a {
+    color: #0032a1;
+  }
+
   p {
     margin-top: 0rem;
     margin-bottom: 2rem;
@@ -328,7 +334,6 @@ const ShopWrapper = styled(motion.div)`
 const Sticky = styled(motion.div)`
   margin: 2rem;
   width: 250px;
-
 
   @media (max-width: ${breakpoints.s}px) {
     max-width: 70vw;

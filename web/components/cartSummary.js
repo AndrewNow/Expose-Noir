@@ -92,6 +92,12 @@ const Button = styled.button`
   background: none;
   padding: 0;
 
+  color: #0032a1;
+  *,
+  a {
+    color: #0032a1;
+  }
+
   :hover,
   :focus {
     text-decoration: underline;
