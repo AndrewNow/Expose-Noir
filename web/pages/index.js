@@ -117,7 +117,7 @@ export default function Home() {
       </Head>
       <PageWrapper>
         <Container>
-          <motion.span
+          <Span
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             variants={initialLoadAnim}
@@ -127,11 +127,11 @@ export default function Home() {
             <Image
               src={hover ? "/biosphere.gif" : "/biosphere.jpg"}
               alt="Illustration of Montreal's Biosphere on fire, with a rave smiley face superimposed on the dome."
-              width={337}
-              height={555}
+              width={300}
+              height={494}
               quality={70}
             />
-          </motion.span>
+          </Span>
           {/* <TripleX
             variants={initialLoadAnim}
             initial="hidden"
@@ -240,6 +240,11 @@ const Container = styled.section`
   @media (max-width: ${breakpoints.s}px) {
     width: 180px;
   }
+`;
+
+// !!
+const Span = styled(motion.span)`
+  max-width: 300px;
 `;
 
 const BottomSection = styled(motion.div)`

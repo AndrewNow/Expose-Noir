@@ -44,7 +44,8 @@ const Main = styled.main`
 
   a,
   button {
-    color: black;
+    /* !! */
+    color: #0032a1;
     :hover {
       /* animation: ${blink} 0.35s linear infinite alternate-reverse; */
     }
