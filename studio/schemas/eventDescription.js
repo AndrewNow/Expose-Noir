@@ -9,6 +9,16 @@ export default {
       type: "string",
     },
     {
+      name: "sentence1",
+      title: "Sentence 1",
+      type: "string",
+    },
+    {
+      name: "sentence2",
+      title: "Sentence 2",
+      type: "string",
+    },
+    {
       name: "description",
       title: "Description / Lineup",
       description:

@@ -11,4 +11,9 @@ export default {
         "To be uploaded from your S3 bucket, here: https://s3.console.aws.amazon.com/s3/buckets/exposenoir?region=ca-central-1&tab=objects",
     },
   ],
+  preview: {
+    select: {
+      title: "name",
+    },
+  },
 };

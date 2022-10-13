@@ -8,6 +8,7 @@ import event from "./event";
 import eventDescription from "./eventDescription";
 import paymentSuccess from "./paymentSuccess";
 import videoEmbed from "./videoEmbed";
+import pastBookings from "./pastBookings";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -23,6 +24,7 @@ export default createSchema({
     eventDescription,
     blockContent,
     paymentSuccess,
-    videoEmbed
+    videoEmbed,
+    pastBookings
   ]),
 });
