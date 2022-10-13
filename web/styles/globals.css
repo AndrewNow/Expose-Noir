@@ -1,17 +1,17 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-* {
-  color: #0032a1;
-}
-html, body {
-  margin: 0;
-}
-
-button {
-  height: 17px;
-}
-
 :root {
+  --color-primary: #fff;
+  --color-secondary: #000;
   --font-mono: 13px;
+}
+* {
+  color: var(--color-primary);
+}
+html, body, main {
+  margin: 0;
+  background: var(--color-secondary);
+}
+
+button, a {
+  height: 17px;
+  color: var(--color-primary)!important;
 }

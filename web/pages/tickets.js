@@ -289,7 +289,7 @@ const DescriptionWrapper = styled(motion.div)`
 
   *,
   a {
-    color: #0032a1;
+    color: var(--color-primary);
   }
 
   p {

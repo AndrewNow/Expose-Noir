@@ -21,8 +21,6 @@ const FouroFour = () => {
   );
 };
 
-
-
 export default FouroFour;
 
 const blink = keyframes`

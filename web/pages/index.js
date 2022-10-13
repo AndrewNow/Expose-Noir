@@ -117,7 +117,7 @@ export default function Home() {
       </Head>
       <PageWrapper>
         <Container>
-          <Span
+          {/* <Span
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             variants={initialLoadAnim}
@@ -131,8 +131,8 @@ export default function Home() {
               height={494}
               quality={70}
             />
-          </Span>
-          {/* <TripleX
+          </Span> */}
+          <TripleX
             variants={initialLoadAnim}
             initial="hidden"
             animate="animate"
@@ -146,7 +146,7 @@ export default function Home() {
             <motion.span variants={staggerChild}>
               <h2>X</h2>
             </motion.span>
-          </TripleX> */}
+          </TripleX>
           <BottomSection
             variants={delayBottomAnimation}
             initial="hidden"
@@ -267,7 +267,7 @@ const ContinueInput = styled.div`
   align-items: center;
 
   /* !! */
-  color: #0032a1;
+  color: var(--color-primary);
 
   :first-of-type(h3) {
     padding-right: 0.25rem;
@@ -277,34 +277,34 @@ const ContinueInput = styled.div`
 const ContinueButtons = styled.div`
   margin: 1rem auto;
   /* !! */
-  color: #0032a1;
+  color: var(--color-primary);
 `;
 
-// const TripleX = styled(motion.div)`
-//   margin: 0 auto;
-//   margin-bottom: 10rem;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: center;
+const TripleX = styled(motion.div)`
+  margin: 0 auto;
+  margin-bottom: 10rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 
-//   h2 {
-//     font-size: 16px;
-//     font-family: sans-serif;
-//   }
+  h2 {
+    font-size: 16px;
+    font-family: sans-serif;
+  }
 
-//   span {
-//     margin: 0 0.25rem;
-//     /* font-family: sans-serif; */
-//   }
-// `;
+  span {
+    margin: 0 0.25rem;
+    /* font-family: sans-serif; */
+  }
+`;
 
 const Button = styled.button`
-  background: white;
+  background: var(--color-secondary);
   padding: 0 0.1rem;
   font-size: var(--font-sans);
   font-weight: 300;
   /* !! */
-  color: #0032a1 !important;
+  color: var(--color-primary) !important;
 
   :first-child {
     margin-right: 0.25rem;
@@ -314,9 +314,9 @@ const Button = styled.button`
   }
 
   :hover {
-    color: white !important;
+    color: var(--color-secondary) !important;
     /* background: black; */
-    background: #0032a1;
+    background: var(--color-primary);
     animation: ${blink} 0.5s linear alternate;
   }
   @media (max-width: ${breakpoints.s}px) {
@@ -334,7 +334,7 @@ const Cursor = styled.div`
   margin: 0.25rem 0;
   /* !! */
   /* background-color: black; */
-  background-color: #0032a1;
+  background-color: var(--color-primary);
   display: inline-block;
 `;
 
@@ -357,7 +357,7 @@ const UserPressedYes = styled.div`
   justify-content: center;
   align-items: center;
   /* !! */
-  color: #0032a1 !important;
+  color: var(--color-primary) !important;
   ::after {
     overflow: hidden;
     display: inline-block;
