@@ -139,7 +139,7 @@ const Tickets = ({ eventDescription, products }) => {
           <DescriptionWrapper>
             <WindupChildren onFinished={() => setTypeWriterFinished(true)}>
               <p>
-                <Pace getPace={(char) => (char === " " ? 70 : 50)}>
+                <Pace getPace={(char) => (char === " " ? 40 : 30)}>
                   {event?.sentence1}
                 </Pace>
               </p>
@@ -147,7 +147,8 @@ const Tickets = ({ eventDescription, products }) => {
                 <>
                   <Pause ms={1000} />
                   <p>
-                    <Pace getPace={(char) => (char === " " ? 70 : 50)}>
+                    {/* pace was 70-50 for both lines */}
+                    <Pace getPace={(char) => (char === " " ? 40 : 30)}>
                       {event?.sentence2}
                     </Pace>
                   </p>
