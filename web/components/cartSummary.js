@@ -13,7 +13,7 @@ export default function CartSummary() {
     cartCount,
     cartDetails,
     redirectToCheckout,
-    // clearCart,
+    clearCart,
   } = useShoppingCart();
 
   //sets our cartEmpty state with cart data
@@ -52,6 +52,14 @@ export default function CartSummary() {
         <Button type="submit" disabled={cartEmpty || loading}>
           purchase <div className="card-number" />
         </Button>
+        {" | "}
+        <ClearCartButton
+          onClick={clearCart}
+          type="button"
+          style={{ color: "red!important" }}
+        >
+          clear cart
+        </ClearCartButton>
       </CheckoutButtons>
       {checkoutAnimation ? (
         <>
@@ -91,15 +99,31 @@ const Button = styled.button`
   margin-right: 0.5rem;
   background: none;
   padding: 0;
-
-  color: #0032a1;
+  color: var(--color-primary);
   *,
   a {
-    color: #0032a1;
+    color: var(--color-primary);
   }
 
   :hover,
   :focus {
+    text-decoration: underline;
+  }
+`;
+const ClearCartButton = styled.button`
+  margin-left: 0.5rem;
+  background: none;
+  padding: 0;
+  color: var(--color-primary);
+
+  *,
+  a {
+    color: var(--color-primary);
+  }
+
+  :hover,
+  :focus {
+    color: red !important;
     text-decoration: underline;
   }
 `;

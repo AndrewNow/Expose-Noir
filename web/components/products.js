@@ -93,7 +93,8 @@ const Button = styled.button`
   margin: 0 0.5rem;
   width: 25px;
   background: white;
-  color: var(--color-secondary)!important;
+  text-align: center;
+  color: var(--color-secondary) !important;
   transition: 0.25 all ease;
   :disabled {
     cursor: not-allowed;
