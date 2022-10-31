@@ -3,7 +3,7 @@ import getStripe from "../lib/stripe/getStripe";
 
 export default function Cart({ children }) {
   return (
-    <CartProvider mode="checkout-session" stripe={getStripe()} currency={"cad"}>
+    <CartProvider mode="checkout-session" stripe={getStripe()} currency={"cad"} shouldPersist={false}>
       {children}
     </CartProvider>
   );
