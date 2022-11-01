@@ -1,4 +1,5 @@
-import { validateCartItems } from "use-shopping-cart/src/serverUtil";
+import { validateCartItems } from "use-shopping-cart/utilities";
+// import { validateCartItems } from "use-shopping-cart/src/serverUtil";
 import Stripe from "stripe";
 import { client } from "../../../lib/sanity/client";
 import { eventQuery } from "../../../lib/sanity/eventQuery";
@@ -7,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2020-03-02",
 });
-
+  
 export default async function handler(req, res) {
   // This endpoint will send the POST request to Stripe's servers.
   if (req.method === "POST") {
