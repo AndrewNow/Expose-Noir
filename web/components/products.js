@@ -1,8 +1,15 @@
 import { useShoppingCart, formatCurrencyString } from "use-shopping-cart";
 import styled from "styled-components";
 
-const Products = ({ products }) => {
+const Products = ({ products, textcolor, backgroundColor }) => {
   const { addItem, decrementItem, cartCount } = useShoppingCart();
+
+  let textcolorCheck;
+  if (textcolor) {
+    textcolorCheck = textcolor;
+  } else {
+    textcolorCheck = "var(--color-primary)";
+  }
 
   return (
     <Section>
@@ -10,7 +17,8 @@ const Products = ({ products }) => {
         <Ticket
           key={product.id}
           style={{
-            color: product.soldOut || !product.forSale ? "grey" : "black",
+            color: textcolorCheck,
+            // opacity: product.soldOut || !product.forSale ? 0.25 : 1,
           }}
         >
           <p
@@ -35,23 +43,31 @@ const Products = ({ products }) => {
           ) : null}
           {/* If product is sold out or not for sale, don't show the cart buttons */}
           {product.soldOut || !product.forSale ? null : (
-            <Options>
+            <Options textcolor={textcolor}>
               quantity
               <div>
                 <Button
-                  onClick={() => addItem(product)}
-                  aria-label="Add ticket to cart"
-                  disabled={product.soldOut || !product.forSale ? true : false}
-                >
-                  +
-                </Button>
-                {cartCount}
-                <Button
+                  textcolor={textcolor}
+                  backgroundColor={backgroundColor}
                   onClick={() => decrementItem(product.id)}
                   aria-label="Remove a ticket from the cart"
                   disabled={product.soldOut || !product.forSale ? true : false}
                 >
                   -
+                </Button>
+                <span color={textcolorCheck}>{cartCount}</span>
+                <Button
+                  textcolor={textcolor}
+                  backgroundColor={backgroundColor}
+                  onClick={() => addItem(product)}
+                  aria-label="Add ticket to cart"
+                  disabled={
+                    product.soldOut || !product.forSale
+                      ? true
+                      : false || cartCount >= 6
+                  }
+                >
+                  +
                 </Button>
               </div>
             </Options>
@@ -87,19 +103,31 @@ const Options = styled.div`
 
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+
+  color: ${(props) => props.textcolor || "var(--color-primary)"};
 `;
 
 const Button = styled.button`
+  position: relative;
   margin: 0 0.5rem;
   width: 25px;
-  background: white;
+  /* background: whitesmoke; */
+  background: ${(props) => props.backgroundColor || "var(--color-secondary)"};
+  filter: brightness(92%);
   text-align: center;
-  color: var(--color-secondary) !important;
+  color: ${(props) => props.textcolor || "var(--color-primary)"};
   transition: 0.25 all ease;
   :disabled {
     cursor: not-allowed;
+    opacity: 30%;
+    animation: none;
+    :hover {
+      animation: none;
+      transition: none !important;
+    }
   }
   :hover:not(:disabled) {
-    background: whitesmoke;
+    background: ${(props) => props.textcolor || "var(--color-primary)"};
+    color: ${(props) => props.backgroundColor || "var(--color-secondary)"};
   }
 `;

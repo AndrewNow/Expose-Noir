@@ -2,7 +2,7 @@ import { useState } from "react";
 import { decode } from "html-entities";
 import styled from "styled-components";
 
-const NewsletterForm = ({ status, message, onValidated }) => {
+const NewsletterForm = ({ status, message, onValidated, successMessage }) => {
   const [error, setError] = useState(null);
   const [email, setEmail] = useState(null);
 
@@ -60,13 +60,11 @@ const NewsletterForm = ({ status, message, onValidated }) => {
           // pass in the value the user has entered (their email)
           onChange={(event) => setEmail(event?.target?.value ?? "")}
           type="email"
-          placeholder="join our mailing list..."
+          placeholder="insert email..."
           // in case user hits Enter instead of submit
           onKeyUp={(event) => handleInputKeyEvent(event)}
         />
-        <SubmitButton onClick={handleFormSubmit}>
-          submit
-        </SubmitButton>
+        <SubmitButton onClick={handleFormSubmit}>submit</SubmitButton>
       </Flex>
       <MessageWrapper>
         {status === "sending" && <div>Sending...</div>}
@@ -76,7 +74,13 @@ const NewsletterForm = ({ status, message, onValidated }) => {
           />
         ) : null}
         {status === "success" && status !== "error" && !error && (
-          <Success dangerouslySetInnerHTML={{ __html: decode(message) }} />
+          <Success
+            // check if successMessage exists within Sanity
+            // if not, just decode the default success message
+            dangerouslySetInnerHTML={{
+              __html: successMessage ? successMessage : decode(message),
+            }}
+          />
         )}
       </MessageWrapper>
     </>
@@ -104,10 +108,10 @@ const Input = styled.input`
 
 const SubmitButton = styled.button`
   /* margin: 0 1rem; */
-  color: grey!important;
+  color: grey !important;
   width: 100%;
   margin-top: 1rem;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   background: none;
   cursor: pointer;
   text-align: left;

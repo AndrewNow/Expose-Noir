@@ -15,13 +15,25 @@ import { breakpoints } from "../utils/breakpoints";
 import Head from "next/head";
 import Link from "next/link";
 import { WindupChildren, Pause, Pace } from "windups";
+import { colorQuery } from "../lib/sanity/settingsQuery";
+import { newsletterTextQuery } from "../lib/sanity/newsletterTextQuery";
 
-const Tickets = ({ eventDescription, products }) => {
+const Tickets = ({
+  eventDescription,
+  products,
+  colorSettings,
+  newsletterText,
+}) => {
   // logic for converting ISO date into regular human-readable format below
   const event = eventDescription[0];
 
   const d = new Date(`${event?.launchAt}`);
-  const e = new Date(`${event?.endAt}`);
+  let e;
+  if (event?.endAt) {
+    e = new Date(`${event?.endAt}`);
+  } else {
+    e = null;
+  }
 
   const months = [
     "January",
@@ -42,7 +54,13 @@ const Tickets = ({ eventDescription, products }) => {
   let year = d.getFullYear();
   let startHour = d.getHours();
 
-  let endHour = e.getHours();
+  let endHour;
+
+  if (e) {
+    endHour = e.getHours();
+  } else {
+    endHour = null;
+  }
 
   let fullTimeStart = "";
   let fullTimeEnd = "";
@@ -58,12 +76,14 @@ const Tickets = ({ eventDescription, products }) => {
     // similarly, if hour = 22 and minute = 8
     fullTimeStart = hourArray[startHour] + "pm"; // fulltime = 10:08 PM
   }
-  if (endHour < 12) {
-    // Just for an example, if hour = 11 and minute = 29
-    fullTimeEnd = hourArray[endHour] + " am"; // fulltime = 11:29 AM
-  } else {
-    // similarly, if hour = 22 and minute = 8
-    fullTimeEnd = hourArray[endHour] + "pm"; // fulltime = 10:08 PM
+  if (endHour !== null) {
+    if (endHour < 12) {
+      // Just for an example, if hour = 11 and minute = 29
+      fullTimeEnd = hourArray[endHour] + " am"; // fulltime = 11:29 AM
+    } else {
+      // similarly, if hour = 22 and minute = 8
+      fullTimeEnd = hourArray[endHour] + "pm"; // fulltime = 10:08 PM
+    }
   }
 
   // animation config
@@ -128,15 +148,32 @@ const Tickets = ({ eventDescription, products }) => {
     }
   }, []);
 
+  // Check to see if colors are assigned from CMS
+  // If not, default to CSS variables
+  let bgColor;
+  let textColor;
+  if (colorSettings.length && colorSettings[0].backgroundColor) {
+    bgColor = colorSettings[0].backgroundColor;
+  } else {
+    bgColor = "var(--color-secondary)";
+  }
+  if (colorSettings.length && colorSettings[0].textColor) {
+    textColor = colorSettings[0].textColor;
+  } else {
+    textColor = "var(--color-primary)";
+  }
+
   return (
     <>
       <Head>
-        <title>tickets</title>
+        <title>Tickets</title>
         <meta name="description" content="Exposé Noir | Ticketing" />
+        <meta name="theme-color" content={bgColor} />
       </Head>
-      <Wrapper>
+      <Wrapper backgroundColor={bgColor}>
+        {/* Only show the shop if an event description exists */}
         {eventDescription[0] ? (
-          <DescriptionWrapper>
+          <DescriptionWrapper textcolor={textColor}>
             <WindupChildren onFinished={() => setTypeWriterFinished(true)}>
               <p>
                 <Pace getPace={(char) => (char === " " ? 40 : 30)}>
@@ -196,27 +233,43 @@ const Tickets = ({ eventDescription, products }) => {
             variants={initialLoadAnim}
             initial="hidden"
             animate="animate"
+            textcolor={textColor}
           >
-            <p>
-              No events planned at the moment, but you can subscribe to our
-              newsletter in the meantime for updates.
-              <br />
-              <br />
+            <div>
+              <WrapMarkdown>
+                <PortableText
+                  value={newsletterText.text}
+                  components={{
+                    types: {
+                      image: SanityImageComponent,
+                    },
+                  }}
+                />
+              </WrapMarkdown>
               <NewsletterWrapper>
-                <MailchimpFormContainer />
+                <MailchimpFormContainer
+                  successMessage={
+                    newsletterText.successMessage &&
+                    newsletterText.successMessage
+                  }
+                />
               </NewsletterWrapper>
-            </p>
+            </div>
           </NoEvents>
         )}
         {eventDescription[0] && (
+          // Only show the shop if an event description exists
           <ShopWrapper
             variants={shopLoadAnim}
             initial="hidden"
             animate={typeWriterFinished ? "animate" : "hidden"}
           >
             <Sticky variants={staggerChild}>
-              <TicketLineWrapper>
-                <TicketTitleButton onClick={() => setTicketOpen(!ticketOpen)}>
+              <TicketLineWrapper textcolor={textColor}>
+                <TicketTitleButton
+                  onClick={() => setTicketOpen(!ticketOpen)}
+                  textcolor={textColor}
+                >
                   <h2>tickets</h2>
                 </TicketTitleButton>
                 {!ticketOpen && (
@@ -228,21 +281,44 @@ const Tickets = ({ eventDescription, products }) => {
               <AnimatePresence exitBeforeEnter>
                 {ticketOpen && (
                   <motion.div variants={staggerChild} exit="hidden">
-                    <DescriptionHeader>
+                    <DescriptionHeader textcolor={textColor}>
                       <h3>{event?.name}</h3>
                       <p>
                         {event?.launchAt && (
                           <span>
                             {month} {date}, {year}. {fullTimeStart} to{" "}
-                            {fullTimeEnd}
+                            {fullTimeEnd ? fullTimeEnd : "?"}
                           </span>
                         )}
                       </p>
-                      <p>{event?.location}</p>
+                      {event?.location ? (
+                        <p>{event?.location}</p>
+                      ) : (
+                        <p>location tba</p>
+                      )}
+                      {event?.additionalInfo && (
+                        <>
+                          <br />
+                          <WrapMarkdown>
+                            <PortableText
+                              value={event?.additionalInfo}
+                              components={{
+                                types: {
+                                  image: SanityImageComponent,
+                                },
+                              }}
+                            />
+                          </WrapMarkdown>
+                        </>
+                      )}
                     </DescriptionHeader>
                     <Cart>
-                      <Products products={products} />
-                      <CartSummary />
+                      <Products
+                        products={products}
+                        textcolor={textColor}
+                        backgroundColor={bgColor}
+                      />
+                      <CartSummary textcolor={textColor} />
                     </Cart>
                   </motion.div>
                 )}
@@ -258,11 +334,15 @@ const Tickets = ({ eventDescription, products }) => {
 export const getStaticProps = async () => {
   const products = await client.fetch(eventQuery);
   const eventDescription = await client.fetch(eventDescriptionQuery);
+  const colorSettings = await client.fetch(colorQuery);
+  const newsletterText = await client.fetch(newsletterTextQuery);
 
   return {
     props: {
       products,
       eventDescription,
+      colorSettings,
+      newsletterText,
     },
     revalidate: 10,
   };
@@ -278,6 +358,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  background: ${(props) => props.backgroundColor || "var(--color-secondary"};
 
   @media (max-width: ${breakpoints.s}px) {
     flex-direction: column;
@@ -290,7 +371,7 @@ const DescriptionWrapper = styled(motion.div)`
 
   *,
   a {
-    color: var(--color-primary);
+    color: ${(props) => props.textcolor || "var(--color-primary"};
   }
 
   p {
@@ -310,12 +391,17 @@ const DescriptionWrapper = styled(motion.div)`
 `;
 
 const DescriptionHeader = styled.div`
+  * {
+    color: ${(props) => props.textcolor || "var(--color-primary"};
+  }
   h2 {
+    color: ${(props) => props.textcolor || "var(--color-primary"};
     text-decoration: underline;
     font-size: 16px;
     margin-bottom: 1rem;
   }
   p {
+    color: ${(props) => props.textcolor || "var(--color-primary"};
     text-transform: lowercase;
     margin: 0;
   }
@@ -371,10 +457,12 @@ const NoEvents = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: ${(props) => props.textcolor || "var(--color-primary"};
 `;
 
 const TicketLineWrapper = styled.div`
   display: flex;
+  color: ${(props) => props.textcolor || "var(--color-primary"};
 `;
 
 const TicketTitleButton = styled.button`
@@ -382,7 +470,9 @@ const TicketTitleButton = styled.button`
   text-decoration: underline;
   padding: 0;
   padding-right: 0.5rem;
+  color: ${(props) => props.textcolor || "var(--color-primary"};
   h2 {
+    color: ${(props) => props.textcolor || "var(--color-primary"};
     margin-top: 0;
   }
 `;

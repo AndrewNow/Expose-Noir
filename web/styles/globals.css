@@ -1,17 +1,17 @@
 :root {
-  --color-primary: #fff;
-  --color-secondary: #000;
+  --color-primary: #000;
+  --color-secondary: #fff;
   --font-mono: 13px;
 }
 * {
-  color: var(--color-primary);
+  /* color: var(--color-primary); */
 }
 html, body, main {
   margin: 0;
-  background: var(--color-secondary);
+  /* background: var(--color-secondary); */
 }
 
 button, a {
   height: 17px;
-  color: var(--color-primary)!important;
+  /* color: var(--color-primary)!important; */
 }

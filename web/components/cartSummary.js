@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 import { fetchPostJSON } from "../utils/apiHelpers";
 import styled, { keyframes } from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function CartSummary() {
+export default function CartSummary({ textcolor }) {
   //setting up some React states for our cart
   const [loading, setLoading] = useState(false);
   const [cartEmpty, setCartEmpty] = useState(true);
@@ -13,7 +14,7 @@ export default function CartSummary() {
     cartCount,
     cartDetails,
     redirectToCheckout,
-    clearCart,
+    // clearCart,
   } = useShoppingCart();
 
   //sets our cartEmpty state with cart data
@@ -48,19 +49,40 @@ export default function CartSummary() {
 			https://reactjs.org/docs/dom-elements.html#suppresshydrationwarning*/}
 
       {/* <p suppressHydrationWarning>tickets: {cartCount}</p> */}
-      <p suppressHydrationWarning>total {formattedTotalPrice} plus tax</p>
+      <AnimatePresence>
+        {cartCount >= 6 && (
+          <LimitNote
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ color: textcolor ? textcolor : "var(--color-primary)" }}
+          >
+            * max sixxx per order
+          </LimitNote>
+        )}
+      </AnimatePresence>
+      <p
+        style={{ color: textcolor ? textcolor : "var(--color-primary)" }}
+        suppressHydrationWarning
+      >
+        total {formattedTotalPrice} plus tax
+      </p>
       <CheckoutButtons>
-        <Button type="submit" disabled={cartEmpty || loading}>
+        <Button
+          textcolor={textcolor}
+          type="submit"
+          disabled={cartEmpty || loading}
+        >
           purchase <div className="card-number" />
         </Button>
-        {" | "}
+        {/* {" | "}
         <ClearCartButton
           onClick={clearCart}
           type="button"
           style={{ color: "red!important" }}
         >
           clear cart
-        </ClearCartButton>
+        </ClearCartButton> */}
       </CheckoutButtons>
       {checkoutAnimation ? (
         <>
@@ -69,7 +91,7 @@ export default function CartSummary() {
           <GatewayAnimation>loading gateway</GatewayAnimation>
         </>
       ) : (
-        <SmileyWrapper>
+        <SmileyWrapper textcolor={textcolor}>
           <SmileyWidth>
             <AnimateSmiley>:)</AnimateSmiley>
           </SmileyWidth>
@@ -91,6 +113,8 @@ const blink = keyframes`
   }
 `;
 
+const LimitNote = styled(motion.p)``;
+
 const CheckoutButtons = styled.div`
   display: flex;
   margin-top: 1rem;
@@ -100,10 +124,10 @@ const Button = styled.button`
   margin-right: 0.5rem;
   background: none;
   padding: 0;
-  color: var(--color-primary);
+  color: ${(props) => props.textcolor || "var(--color-primary"};
   *,
   a {
-    color: var(--color-primary);
+    color: ${(props) => props.textcolor || "var(--color-primary"};
   }
 
   :hover,
@@ -111,23 +135,23 @@ const Button = styled.button`
     text-decoration: underline;
   }
 `;
-const ClearCartButton = styled.button`
-  margin-left: 0.5rem;
-  background: none;
-  padding: 0;
-  color: var(--color-primary);
+// const ClearCartButton = styled.button`
+//   margin-left: 0.5rem;
+//   background: none;
+//   padding: 0;
+//   color: var(--color-primary);
 
-  *,
-  a {
-    color: var(--color-primary);
-  }
+//   *,
+//   a {
+//     color: var(--color-primary);
+//   }
 
-  :hover,
-  :focus {
-    color: red !important;
-    text-decoration: underline;
-  }
-`;
+//   :hover,
+//   :focus {
+//     color: red !important;
+//     text-decoration: underline;
+//   }
+// `;
 
 const Form = styled.form`
   margin: 2rem 0;
@@ -175,6 +199,7 @@ const SmileyWrapper = styled.div`
   display: flex;
   width: 120px;
   margin-top: 0.5rem;
+  color: ${(props) => props.textcolor || "var(--color-primary"};
 `;
 
 const SmileyWidth = styled.div`

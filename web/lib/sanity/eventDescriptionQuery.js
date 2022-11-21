@@ -14,6 +14,7 @@ export const eventDescriptionQuery = groq`
     launchAt, 
     endAt,
     location,
+    additionalInfo,
     "id": _id,
     "image": image.asset->url,
   }`;

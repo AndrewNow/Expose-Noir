@@ -1,13 +1,12 @@
 import styled, { keyframes } from "styled-components";
 import Head from "next/head";
-// import { breakpoints } from "./utils/breakpoints";
 
 export const Layout = (props) => {
   return (
     <>
       <Head>
         {/* <link rel="icon" href="/bluefavicon.png" /> */}
-        <link rel="icon" href="/xxxfavicon.png" />
+        {/* <link rel="icon" href="/xxxfavicon.png" /> */}
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Main>{props.children}</Main>
@@ -44,7 +43,7 @@ const Main = styled.main`
 
   a,
   button {
-    color: var(--color-primary);
+    /* color: var(--color-primary); */
     :hover {
       animation: ${blink} 0.35s linear infinite alternate-reverse;
     }
