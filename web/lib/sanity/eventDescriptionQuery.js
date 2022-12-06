@@ -7,6 +7,9 @@ export const eventDescriptionQuery = groq`
     sentence2,
     description[] {
       ...,
+      _type == "pdfFile" => {
+        "file": file.asset->url,
+      },
       _type == "image" => {
         "image": asset->url,
       },

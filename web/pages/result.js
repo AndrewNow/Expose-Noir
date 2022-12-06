@@ -60,9 +60,9 @@ const ResultPage = ({ paymentSuccessText, colorSettings }) => {
   return (
     <PageWrapper backgroundColor={bgColor}>
       <Inner
-        variants={blink}
-        animate="animate"
-        initial="hidden"
+        // variants={blink}
+        // animate="animate"
+        // initial="hidden"
         textColor={textColor}
       >
         {/* <h3>Status: {data?.payment_intent?.status ?? "loading..."}</h3> */}

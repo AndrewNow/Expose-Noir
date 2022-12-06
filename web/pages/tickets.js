@@ -17,6 +17,7 @@ import Link from "next/link";
 import { WindupChildren, Pause, Pace } from "windups";
 import { colorQuery } from "../lib/sanity/settingsQuery";
 import { newsletterTextQuery } from "../lib/sanity/newsletterTextQuery";
+import MarkdownContent from "../utils/MarkdownContent";
 
 const Tickets = ({
   eventDescription,
@@ -109,9 +110,12 @@ const Tickets = ({
   };
 
   const staggerChild = {
-    hidden: { opacity: 0 },
+    hidden: {
+      opacity: 0,
+    },
     animate: {
-      opacity: [0, 1, 0, 1],
+      opacity: 1,
+      // opacity: [0, 1, 0, 1],
       transition: {
         duration: 0.5,
         ease: "linear",
@@ -121,7 +125,8 @@ const Tickets = ({
   const staggerChildSlow = {
     hidden: { opacity: 0 },
     animate: {
-      opacity: [0, 1, 0, 1],
+      opacity: 1,
+      // opacity: [0, 1, 0, 1],
       transition: {
         duration: 0.5,
         ease: "linear",
@@ -200,14 +205,7 @@ const Tickets = ({
             >
               <motion.div variants={staggerChildSlow}>
                 <WrapMarkdown>
-                  <PortableText
-                    value={event?.description}
-                    components={{
-                      types: {
-                        image: SanityImageComponent,
-                      },
-                    }}
-                  />
+                  <MarkdownContent blocks={event?.description} />
                 </WrapMarkdown>
                 {event?.image && (
                   <DownloadPoster
@@ -230,9 +228,9 @@ const Tickets = ({
           </DescriptionWrapper>
         ) : (
           <NoEvents
-            variants={initialLoadAnim}
-            initial="hidden"
-            animate="animate"
+            // variants={initialLoadAnim}
+            // initial="hidden"
+            // animate="animate"
             textcolor={textColor}
           >
             <div>
@@ -264,7 +262,9 @@ const Tickets = ({
             initial="hidden"
             animate={typeWriterFinished ? "animate" : "hidden"}
           >
-            <Sticky variants={staggerChild}>
+            <Sticky
+              // variants={staggerChild}
+            >
               <TicketLineWrapper textcolor={textColor}>
                 <TicketTitleButton
                   onClick={() => setTicketOpen(!ticketOpen)}
@@ -278,7 +278,7 @@ const Tickets = ({
                   </SmileyWidth>
                 )}
               </TicketLineWrapper>
-              <AnimatePresence exitBeforeEnter>
+              {/* <AnimatePresence exitBeforeEnter> */}
                 {ticketOpen && (
                   <motion.div variants={staggerChild} exit="hidden">
                     <DescriptionHeader textcolor={textColor}>
@@ -322,7 +322,7 @@ const Tickets = ({
                     </Cart>
                   </motion.div>
                 )}
-              </AnimatePresence>
+              {/* </AnimatePresence> */}
             </Sticky>
           </ShopWrapper>
         )}
@@ -379,8 +379,8 @@ const DescriptionWrapper = styled(motion.div)`
     margin-bottom: 2rem;
   }
   a {
-    display: inline-block;
-    padding: 0.25rem 0;
+    /* display: inline-block; */
+    /* padding: 0.25rem 0; */
   }
   @media (max-width: ${breakpoints.s}px) {
     max-width: 70vw;
@@ -438,6 +438,14 @@ const WrapMarkdown = styled(motion.div)`
   /* margin: 2.5rem 0; */
   position: relative;
   max-width: 100%;
+  
+
+  .pdf-file {
+    /* display: inline; */
+    position: relative;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
 
   img {
     margin: 1rem 0;

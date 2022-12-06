@@ -31,8 +31,9 @@ export default function Home({ settings }) {
         router.push("/tickets");
       }, 1000);
     } else if (showResults === false) {
-      setShowBye(true);
       setTimeout(() => {
+        // show "bye!" text after 1000ms (1s)
+        setShowBye(true);
         // go to "xxx" video page
         router.push("/xxx");
       }, 1000);
@@ -78,7 +79,7 @@ export default function Home({ settings }) {
 
   // animation config
   const initialLoadAnim = {
-    hidden: { opacity: 0 },
+    // hidden: { opacity: 0 },
     animate: {
       opacity: 1,
       transition: {
@@ -140,9 +141,9 @@ export default function Home({ settings }) {
             <Span
               // onMouseEnter={() => setHover(true)}
               // onMouseLeave={() => setHover(false)}
-              variants={initialLoadAnim}
-              initial="hidden"
-              animate="animate"
+              // variants={initialLoadAnim}
+              // initial="hidden"
+              // animate="animate"
             >
               <Image
                 src={settings[0].imageUrl}
@@ -176,19 +177,23 @@ export default function Home({ settings }) {
             </TripleX>
           )}
           <BottomSection
-            variants={delayBottomAnimation}
-            initial="hidden"
-            animate="animate"
+            // variants={delayBottomAnimation}
+            // initial="hidden"
+            // animate="animate"
           >
             <AnimatePresence>
+              {/* If user presses no, show sad faces, then timeout to say "bye!" and change page route */}
               {showResults !== null ? (
                 showResults ? (
                   <UserPressedYes textcolor={textColor}> :</UserPressedYes>
                 ) : (
-                  <UserPressedNo textcolor={textColor} variants={staggerChild}>
-                    {" "}
-                    :
-                  </UserPressedNo>
+                    showBye ? <UserPressedNoSadFace>
+                          <p>bye!</p>
+                        </UserPressedNoSadFace> :
+                      <UserPressedNo textcolor={textColor} variants={staggerChild}>
+                      {" "}
+                      :
+                      </UserPressedNo>
                 )
               ) : (
                 <Continue variants={staggerChild}>
@@ -446,3 +451,13 @@ const UserPressedNo = styled(motion.div)`
     width: 0px;
   }
 `;
+
+
+const UserPressedNoSadFace = styled.div`
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.textcolor || "var(--color-primary)"};
+`

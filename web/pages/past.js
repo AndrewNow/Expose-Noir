@@ -52,9 +52,9 @@ const Past = ({ pastBookings, colorSettings }) => {
       </Head>
       <Wrapper
         backgroundColor={bgColor}
-        variants={initialLoadAnim}
-        initial="hidden"
-        animate="animate"
+        // variants={initialLoadAnim}
+        // initial="hidden"
+        // animate="animate"
       >
         {pastBookings.length ? (
           pastBookings.map((event, idx) => {
