@@ -7,7 +7,6 @@ const MarkdownContent = ({ blocks }) => {
     types: {
       image: SanityImageComponent,
       pdfFile: ({ value }) => {
-        console.log(value)
         const { file, fileText } = value;
         return <a
           className="pdf-file"
