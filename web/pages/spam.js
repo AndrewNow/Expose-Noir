@@ -7,7 +7,7 @@ import { PortableText } from "@portabletext/react";
 import SanityImageComponent from "../utils/sanityImageComponent";
 import { colorQuery } from "../lib/sanity/settingsQuery";
 
-const Newsletter = ({ newsletterText, colorSettings }) => {
+const Spam = ({ newsletterText, colorSettings }) => {
   // Check to see if colors are assigned from CMS
   // If not, default to CSS variables
   let bgColor;
@@ -46,7 +46,7 @@ const Newsletter = ({ newsletterText, colorSettings }) => {
   );
 };
 
-export default Newsletter;
+export default Spam;
 
 export const getStaticProps = async () => {
   const newsletterText = await client.fetch(newsletterTextQuery);
