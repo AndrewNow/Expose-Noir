@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+  // AnimatePresence,
+  motion,
+} from "framer-motion";
 import styled, { keyframes } from "styled-components";
 import Cart from "../components/cart";
 import CartSummary from "../components/cartSummary";
@@ -207,6 +210,8 @@ const Tickets = ({
                 <WrapMarkdown>
                   <MarkdownContent blocks={event?.description} />
                 </WrapMarkdown>
+                <Link href="/spam">mailing list</Link>
+                <br />
                 {event?.image && (
                   <DownloadPoster
                     href={urlFor(event?.image)}
@@ -263,7 +268,7 @@ const Tickets = ({
             animate={typeWriterFinished ? "animate" : "hidden"}
           >
             <Sticky
-              // variants={staggerChild}
+            // variants={staggerChild}
             >
               <TicketLineWrapper textcolor={textColor}>
                 <TicketTitleButton
@@ -278,51 +283,55 @@ const Tickets = ({
                   </SmileyWidth>
                 )}
               </TicketLineWrapper>
-              {/* <AnimatePresence exitBeforeEnter> */}
-                {ticketOpen && (
-                  <motion.div variants={staggerChild} exit="hidden">
-                    <DescriptionHeader textcolor={textColor}>
-                      <h3>{event?.name}</h3>
-                      <p>
-                        {event?.launchAt && (
-                          <span>
-                            {month} {date}, {year}. {fullTimeStart} to{" "}
-                            {fullTimeEnd ? fullTimeEnd : "?"}
-                          </span>
-                        )}
-                      </p>
-                      {event?.location ? (
-                        <p>{event?.location}</p>
-                      ) : (
-                        <p>location tba</p>
+              {/* <A
+              //nimatePresence 
+              exitBeforeEnter> */}
+              {ticketOpen && (
+                <motion.div variants={staggerChild} exit="hidden">
+                  <DescriptionHeader textcolor={textColor}>
+                    <h3>{event?.name}</h3>
+                    <p>
+                      {event?.launchAt && (
+                        <span>
+                          {month} {date}, {year}. {fullTimeStart} to{" "}
+                          {fullTimeEnd ? fullTimeEnd : "?"}
+                        </span>
                       )}
-                      {event?.additionalInfo && (
-                        <>
-                          <br />
-                          <WrapMarkdown>
-                            <PortableText
-                              value={event?.additionalInfo}
-                              components={{
-                                types: {
-                                  image: SanityImageComponent,
-                                },
-                              }}
-                            />
-                          </WrapMarkdown>
-                        </>
-                      )}
-                    </DescriptionHeader>
-                    <Cart>
-                      <Products
-                        products={products}
-                        textcolor={textColor}
-                        backgroundColor={bgColor}
-                      />
-                      <CartSummary textcolor={textColor} />
-                    </Cart>
-                  </motion.div>
-                )}
-              {/* </AnimatePresence> */}
+                    </p>
+                    {event?.location ? (
+                      <p>{event?.location}</p>
+                    ) : (
+                      <p>location tba</p>
+                    )}
+                    {event?.additionalInfo && (
+                      <>
+                        <br />
+                        <WrapMarkdown>
+                          <PortableText
+                            value={event?.additionalInfo}
+                            components={{
+                              types: {
+                                image: SanityImageComponent,
+                              },
+                            }}
+                          />
+                        </WrapMarkdown>
+                      </>
+                    )}
+                  </DescriptionHeader>
+                  <Cart>
+                    <Products
+                      products={products}
+                      textcolor={textColor}
+                      backgroundColor={bgColor}
+                    />
+                    <CartSummary textcolor={textColor} />
+                  </Cart>
+                </motion.div>
+              )}
+              {/* </
+              //AnimatePresence>
+               */}
             </Sticky>
           </ShopWrapper>
         )}
@@ -429,7 +438,7 @@ const Sticky = styled(motion.div)`
   }
 `;
 
-const DownloadPoster = styled.a`
+export const DownloadPoster = styled.a`
   text-decoration: underline;
   cursor: pointer;
 `;
@@ -438,7 +447,6 @@ const WrapMarkdown = styled(motion.div)`
   /* margin: 2.5rem 0; */
   position: relative;
   max-width: 100%;
-  
 
   .pdf-file {
     /* display: inline; */
