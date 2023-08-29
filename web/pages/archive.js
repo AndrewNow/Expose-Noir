@@ -8,7 +8,7 @@ import PrintDjNames from "../components/printDjNames";
 import { colorQuery } from "../lib/sanity/settingsQuery";
 import Head from "next/head";
 
-const Past = ({ pastBookings, colorSettings }) => {
+const Archive = ({ pastBookings, colorSettings }) => {
   const initialLoadAnim = {
     hidden: { opacity: 0 },
     animate: {
@@ -95,7 +95,7 @@ export const getStaticProps = async () => {
   };
 };
 
-export default Past;
+export default Archive;
 
 const Wrapper = styled(motion.div)`
   padding-top: 7.5vh;
