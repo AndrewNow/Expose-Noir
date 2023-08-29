@@ -83,7 +83,7 @@ const Tickets = ({
   if (endHour !== null) {
     if (endHour < 12) {
       // Just for an example, if hour = 11 and minute = 29
-      fullTimeEnd = hourArray[endHour] + " am"; // fulltime = 11:29 AM
+      fullTimeEnd = hourArray[endHour] + "am"; // fulltime = 11:29 AM
     } else {
       // similarly, if hour = 22 and minute = 8
       fullTimeEnd = hourArray[endHour] + "pm"; // fulltime = 10:08 PM
