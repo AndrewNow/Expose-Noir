@@ -218,7 +218,7 @@ const Tickets = ({
                   </DownloadPoster>
                 )}
                 <br />
-                <Link href="/past">past bookings</Link>
+                <Link href="/archive">archive</Link>
                 <br />
                 <a href="mailto:complaints@exposenoir.com">
                   complaints@exposenoir.com
