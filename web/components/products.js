@@ -1,8 +1,30 @@
+import React, { useState } from "react";
 import { useShoppingCart, formatCurrencyString } from "use-shopping-cart";
 import styled from "styled-components";
 
 const Products = ({ products, textcolor, backgroundColor }) => {
-  const { addItem, decrementItem, cartCount } = useShoppingCart();
+  const { addItem, decrementItem, cartCount, cartDetails } = useShoppingCart();
+  const [itemQuantities, setItemQuantities] = useState({});
+
+  const handleIncrement = (product) => {
+    addItem(product);
+    setItemQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [product.id]: (prevQuantities[product.id] || 0) + 1,
+    }));
+  };
+
+  const handleDecrement = (product) => {
+    decrementItem(product.id);
+    setItemQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [product.id]: Math.max((prevQuantities[product.id] || 0) - 1, 0),
+    }));
+  };
+
+  const getItemQuantity = (productId) => {
+    return itemQuantities[productId] || 0;
+  };
 
   let textcolorCheck;
   if (textcolor) {
@@ -11,10 +33,11 @@ const Products = ({ products, textcolor, backgroundColor }) => {
     textcolorCheck = "var(--color-primary)";
   }
 
+  console.log('cart count', cartCount, cartDetails)
   return (
     <Section>
-      {products.map((product) => (
-        <Ticket
+      {products.map((product) => {
+        return (<Ticket
           key={product.id}
           style={{
             color: textcolorCheck,
@@ -34,50 +57,42 @@ const Products = ({ products, textcolor, backgroundColor }) => {
             })}{" "}
             plus tax
           </p>
-          {/* If a product is sold out and NOT for sale, say sold out.*/}
-          {/* If a product is NOT available and NOT sold out, write nothing*/}
           {product.soldOut && !product.forSale ? (
             <p>sold out</p>
           ) : !product.soldOut && product.forSale ? (
             <p>available</p>
           ) : null}
-          {/* If product is sold out or not for sale, don't show the cart buttons */}
-          {product.soldOut || !product.forSale ? null : (
+          {!product.soldOut && product.forSale ? (
             <Options textcolor={textcolor}>
               quantity
               <div>
                 <Button
                   textcolor={textcolor}
                   backgroundColor={backgroundColor}
-                  onClick={() => decrementItem(product.id)}
+                  onClick={() => handleDecrement(product)}
                   aria-label="Remove a ticket from the cart"
-                  disabled={product.soldOut || !product.forSale ? true : false}
+                  disabled={getItemQuantity(product.id) <= 0}
                 >
                   -
                 </Button>
-                <span color={textcolorCheck}>{cartCount}</span>
+                <span color={textcolorCheck}>{getItemQuantity(product.id)}</span>
                 <Button
                   textcolor={textcolor}
                   backgroundColor={backgroundColor}
-                  onClick={() => addItem(product)}
+                  onClick={() => handleIncrement(product)}
                   aria-label="Add ticket to cart"
-                  disabled={
-                    product.soldOut || !product.forSale
-                      ? true
-                      : false || cartCount >= 6
-                  }
+                  disabled={cartCount >= 6 || product.soldOut || !product.forSale}
                 >
                   +
                 </Button>
               </div>
             </Options>
-          )}
-        </Ticket>
-      ))}
+          ) : null}
+        </Ticket>)
+      })}
     </Section>
   );
 };
-
 export default Products;
 
 const Section = styled.section`
@@ -111,21 +126,17 @@ const Button = styled.button`
   position: relative;
   margin: 0 0.5rem;
   width: 25px;
-  /* background: whitesmoke; */
   background: ${(props) => props.backgroundColor || "var(--color-secondary)"};
   filter: brightness(92%);
   text-align: center;
   color: ${(props) => props.textcolor || "var(--color-primary)"};
   transition: 0.25 all ease;
+
   :disabled {
     cursor: not-allowed;
-    opacity: 30%;
-    animation: none;
-    :hover {
-      animation: none;
-      transition: none !important;
-    }
+    opacity: 0.3;
   }
+
   :hover:not(:disabled) {
     background: ${(props) => props.textcolor || "var(--color-primary)"};
     color: ${(props) => props.backgroundColor || "var(--color-secondary)"};
