@@ -36,6 +36,7 @@ const Spam = ({ newsletterText, colorSettings }) => {
         />
         <NewsletterWrapper>
           <MailchimpFormContainer
+            colorSettings={colorSettings}
             successMessage={
               newsletterText.successMessage && newsletterText.successMessage
             }

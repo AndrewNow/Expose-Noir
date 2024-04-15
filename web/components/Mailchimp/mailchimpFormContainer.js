@@ -1,7 +1,7 @@
 import MailchimpSubscribe from "react-mailchimp-subscribe";
 import NewsletterForm from "./newsletterForm";
 
-const MailchimpFormContainer = ({ successMessage }) => {
+const MailchimpFormContainer = ({ successMessage, colorSettings }) => {
   const MAILCHIMP_URL = process.env.NEXT_PUBLIC_MAILCHIMP_URL;
   // component structure taken from here https://dev.to/gedalyakrycer/create-an-email-list-with-react-mailchimp-965
   return (
@@ -10,6 +10,7 @@ const MailchimpFormContainer = ({ successMessage }) => {
       render={({ subscribe, status, message }) => {
         return (
           <NewsletterForm
+            colorSettings={colorSettings}
             status={status}
             message={message}
             onValidated={(formData) => subscribe(formData)}

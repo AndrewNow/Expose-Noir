@@ -2,7 +2,7 @@ import { useState } from "react";
 import { decode } from "html-entities";
 import styled from "styled-components";
 
-const NewsletterForm = ({ status, message, onValidated, successMessage }) => {
+const NewsletterForm = ({ status, message, onValidated, successMessage, colorSettings }) => {
   const [error, setError] = useState(null);
   const [email, setEmail] = useState(null);
 
@@ -53,10 +53,25 @@ const NewsletterForm = ({ status, message, onValidated, successMessage }) => {
     return formattedMessage ? decode(formattedMessage) : null;
   };
 
+
+    // Check to see if colors are assigned from CMS
+  // If not, default to CSS variables
+  let borderStyle;
+  let textColor;
+  if (colorSettings.length && colorSettings[0].textColor) {
+    textColor = colorSettings[0].textColor;
+    borderStyle = "1px solid var(--color-secondary)"
+  } else {
+    textColor = "var(--color-primary)";
+    borderStyle = "1px solid var(--color-primary)!important"
+  }
   return (
     <>
       <Flex>
         <Input
+          // pass in colors
+          textcolor={textColor}
+          borderstyle={borderStyle}
           // pass in the value the user has entered (their email)
           onChange={(event) => setEmail(event?.target?.value ?? "")}
           type="email"
@@ -97,12 +112,12 @@ const Flex = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  border: none;
+  border: unset;
   /* border: 1px dotted grey; */
+  border-bottom: ${(props) => props.borderstyle};
   background: none;
-  border-bottom: 1px dotted grey;
   ::placeholder {
-    color: grey;
+    color: ${(props) => props.textcolor || "var(--color-primary"};
     font-style: italic;
     padding-bottom: 0.5rem;
   }
