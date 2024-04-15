@@ -1,7 +1,7 @@
 import groq from "groq";
 
 export const eventQuery = groq`
-*[_type=="event"] | order(price) {
+*[_type=="event"] | order(_createdAt asc) {
     name,
     soldOut,
     forSale,
