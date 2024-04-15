@@ -115,9 +115,10 @@ const Input = styled.input`
   border: unset;
   /* border: 1px dotted grey; */
   border-bottom: ${(props) => props.borderstyle};
+  color: ${(props) => props.textcolor || "var(--color-primary)"};
   background: none;
   ::placeholder {
-    color: ${(props) => props.textcolor || "var(--color-primary"};
+    color: ${(props) => props.textcolor || "var(--color-secondary)"};
     font-style: italic;
     padding-bottom: 0.5rem;
   }
