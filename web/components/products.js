@@ -33,7 +33,6 @@ const Products = ({ products, textcolor, backgroundColor }) => {
     textcolorCheck = "var(--color-primary)";
   }
 
-  console.log('cart count', cartCount, cartDetails)
   return (
     <Section>
       {products.map((product) => {
