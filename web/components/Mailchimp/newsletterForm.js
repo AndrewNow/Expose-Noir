@@ -99,8 +99,10 @@ const Input = styled.input`
   width: 100%;
   border: none;
   /* border: 1px dotted grey; */
+  background: none;
   border-bottom: 1px dotted grey;
   ::placeholder {
+    color: grey;
     font-style: italic;
     padding-bottom: 0.5rem;
   }
