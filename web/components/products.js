@@ -36,58 +36,64 @@ const Products = ({ products, textcolor, backgroundColor }) => {
   return (
     <Section>
       {products.map((product) => {
-        return (<Ticket
-          key={product.id}
-          style={{
-            color: textcolorCheck,
-            // opacity: product.soldOut || !product.forSale ? 0.25 : 1,
-          }}
-        >
-          <p
+        return (
+          <Ticket
+            key={product.id}
             style={{
-              textDecoration:
-                product.soldOut || !product.forSale ? "line-through" : "none",
+              color: textcolorCheck,
+              // opacity: product.soldOut || !product.forSale ? 0.25 : 1,
             }}
           >
-            {product.name} -{" "}
-            {formatCurrencyString({
-              value: product.price,
-              currency: "cad",
-            })}{" "}
-            plus tax
-          </p>
-          {product.soldOut && !product.forSale ? (
-            <p>sold out</p>
-          ) : !product.soldOut && product.forSale ? (
-            <p>available</p>
-          ) : null}
-          {!product.soldOut && product.forSale ? (
-            <Options textcolor={textcolor}>
-              quantity
-              <div>
-                <Button
-                  textcolor={textcolor}
-                  backgroundColor={backgroundColor}
-                  onClick={() => handleDecrement(product)}
-                  aria-label="Remove a ticket from the cart"
-                  disabled={getItemQuantity(product.id) <= 0}
-                >
-                  -
-                </Button>
-                <span color={textcolorCheck}>{getItemQuantity(product.id)}</span>
-                <Button
-                  textcolor={textcolor}
-                  backgroundColor={backgroundColor}
-                  onClick={() => handleIncrement(product)}
-                  aria-label="Add ticket to cart"
-                  disabled={cartCount >= 6 || product.soldOut || !product.forSale}
-                >
-                  +
-                </Button>
-              </div>
-            </Options>
-          ) : null}
-        </Ticket>)
+            <p
+              style={{
+                textDecoration:
+                  product.soldOut || !product.forSale ? "line-through" : "none",
+              }}
+            >
+              {product.name} -{" "}
+              {formatCurrencyString({
+                value: product.price,
+                currency: "cad",
+              }).replace(/\.00$/, "")}{" "}
+              +tx
+            </p>
+            {product.soldOut && !product.forSale ? (
+              <p>sold out</p>
+            ) : !product.soldOut && product.forSale ? (
+              <p></p>
+            ) : null}
+            {!product.soldOut && product.forSale ? (
+              <Options textcolor={textcolor}>
+                quantity
+                <div>
+                  <Button
+                    textcolor={textcolor}
+                    backgroundColor={backgroundColor}
+                    onClick={() => handleDecrement(product)}
+                    aria-label="Remove a ticket from the cart"
+                    disabled={getItemQuantity(product.id) <= 0}
+                  >
+                    -
+                  </Button>
+                  <span color={textcolorCheck}>
+                    {getItemQuantity(product.id)}
+                  </span>
+                  <Button
+                    textcolor={textcolor}
+                    backgroundColor={backgroundColor}
+                    onClick={() => handleIncrement(product)}
+                    aria-label="Add ticket to cart"
+                    disabled={
+                      cartCount >= 6 || product.soldOut || !product.forSale
+                    }
+                  >
+                    +
+                  </Button>
+                </div>
+              </Options>
+            ) : null}
+          </Ticket>
+        );
       })}
     </Section>
   );

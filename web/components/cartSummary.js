@@ -57,7 +57,7 @@ export default function CartSummary({ textcolor }) {
             exit={{ opacity: 0 }}
             style={{ color: textcolor ? textcolor : "var(--color-primary)" }}
           >
-            * max sixxx per order
+            *maximum six tickets per order.
           </LimitNote>
         )}
       </AnimatePresence>
@@ -65,7 +65,7 @@ export default function CartSummary({ textcolor }) {
         style={{ color: textcolor ? textcolor : "var(--color-primary)" }}
         suppressHydrationWarning
       >
-        total {formattedTotalPrice} plus tax
+        total {formattedTotalPrice} +tx
       </p>
       <CheckoutButtons>
         <Button
